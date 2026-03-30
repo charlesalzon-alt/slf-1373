@@ -18,8 +18,11 @@
             --surface-alt: rgba(255,255,255,0.05);
             --border: rgba(255,255,255,0.08);
             --border-hover: rgba(255,255,255,0.14);
-            --glow-teal: rgba(20,184,166,0.15);
-            --glow-blue: rgba(59,130,246,0.12);
+
+            --gold: #f4be7e;
+            --gold-dark: #d4983e;
+            --gold-dim: rgba(244,190,126,0.12);
+            --gold-glow: rgba(244,190,126,0.15);
 
             --text-primary: #f1f5f9;
             --text-secondary: #94a3b8;
@@ -65,16 +68,16 @@
         }
 
         .header-brand { font-size: 1.25rem; font-weight: 700; color: #fff; letter-spacing: -0.02em; }
-        .header-brand span { color: var(--teal); }
+        .header-brand span { color: var(--gold); }
 
         .header-right { display: flex; align-items: center; gap: 1.5rem; }
         .header-advisor { display: flex; align-items: center; gap: 0.625rem; color: var(--text-muted); font-size: 0.8125rem; }
 
         .advisor-avatar {
             width: 32px; height: 32px; border-radius: 50%;
-            background: rgba(45,212,191,0.1); border: 1px solid rgba(45,212,191,0.2);
+            background: var(--gold-dim); border: 1px solid rgba(244,190,126,0.2);
             display: flex; align-items: center; justify-content: center;
-            font-size: 0.6875rem; font-weight: 600; color: var(--teal);
+            font-size: 0.6875rem; font-weight: 600; color: var(--gold);
         }
 
         .header-client { color: var(--text-primary); font-size: 0.875rem; font-weight: 500; }
@@ -96,28 +99,28 @@
         /* ─── Signal Banner ─── */
         .signal-banner {
             background: var(--surface);
-            border: 1px solid rgba(45,212,191,0.2);
+            border: 1px solid rgba(244,190,126,0.2);
             border-radius: var(--radius-md); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem;
             display: none; align-items: center; gap: 1rem; color: var(--text-primary);
             backdrop-filter: blur(16px);
-            box-shadow: 0 0 40px -10px rgba(45,212,191,0.15);
+            box-shadow: 0 0 40px -10px var(--gold-glow);
         }
         .signal-banner.visible { display: flex; }
 
         .signal-banner-icon {
             width: 44px; height: 44px; border-radius: 12px;
-            background: var(--teal-dim); border: 1px solid rgba(45,212,191,0.15);
+            background: var(--gold-dim); border: 1px solid rgba(244,190,126,0.15);
             display: flex; align-items: center; justify-content: center; font-size: 1.375rem; flex-shrink: 0;
         }
 
         .signal-banner-text { flex: 1; }
-        .signal-banner-text h3 { font-size: 0.9375rem; font-weight: 600; color: var(--teal); }
+        .signal-banner-text h3 { font-size: 0.9375rem; font-weight: 600; color: var(--gold); }
         .signal-banner-text p { font-size: 0.8125rem; color: var(--text-secondary); margin-top: 0.125rem; }
 
         .signal-banner-action {
             padding: 0.5rem 1.25rem;
-            background: linear-gradient(135deg, var(--teal), #0d9488);
-            color: #fff; border: none;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #1a1207; border: none;
             border-radius: var(--radius-sm); font-family: inherit; font-size: 0.8125rem;
             font-weight: 600; cursor: pointer; white-space: nowrap;
             transition: all 0.2s;
@@ -255,14 +258,14 @@
 
         .cta-button {
             padding: 0.875rem 2rem;
-            background: linear-gradient(135deg, var(--teal), #0d9488);
-            color: #fff; border: none;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #1a1207; border: none;
             border-radius: var(--radius-sm); font-family: inherit; font-size: 0.9375rem;
             font-weight: 600; cursor: pointer; white-space: nowrap;
             transition: all 0.2s;
-            box-shadow: 0 4px 20px -4px rgba(45,212,191,0.3);
+            box-shadow: 0 4px 20px -4px rgba(244,190,126,0.3);
         }
-        .cta-button:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 8px 30px -4px rgba(45,212,191,0.35); }
+        .cta-button:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 8px 30px -4px rgba(244,190,126,0.4); }
 
         /* ─── Demo Controls ─── */
         .demo-controls {
@@ -298,7 +301,7 @@
             border-radius: var(--radius-sm); color: var(--text-primary);
             font-size: 0.8125rem; font-family: inherit; transition: border-color 0.15s;
         }
-        .demo-field input:focus, .demo-field select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 2px rgba(45,212,191,0.1); }
+        .demo-field input:focus, .demo-field select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 2px rgba(244,190,126,0.1); }
         .demo-field input::placeholder { color: var(--text-muted); }
         .demo-field select option { background: var(--bg-elevated); color: var(--text-primary); }
 
@@ -312,19 +315,19 @@
             content: ''; position: absolute; width: 20px; height: 20px; left: 3px; top: 3px;
             background: var(--text-secondary); border-radius: 50%; transition: all 0.2s;
         }
-        .toggle-switch input:checked + .toggle-slider { background: var(--teal-dim); }
-        .toggle-switch input:checked + .toggle-slider::before { transform: translateX(22px); background: var(--teal); }
+        .toggle-switch input:checked + .toggle-slider { background: var(--gold-dim); }
+        .toggle-switch input:checked + .toggle-slider::before { transform: translateX(22px); background: var(--gold); }
 
         .toggle-status { font-size: 0.75rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 12px; }
-        .toggle-status.onboarded { background: var(--teal-dim); color: var(--teal); }
+        .toggle-status.onboarded { background: var(--gold-dim); color: var(--gold); }
         .toggle-status.not-onboarded { background: var(--amber-dim); color: var(--amber); }
 
         .demo-actions { display: flex; gap: 0.625rem; margin-top: 1.25rem; }
 
         .btn-trigger {
             padding: 0.625rem 1.5rem;
-            background: linear-gradient(135deg, var(--teal), #0d9488);
-            color: #fff; border: none;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #1a1207; border: none;
             border-radius: var(--radius-sm); font-family: inherit; font-size: 0.8125rem;
             font-weight: 600; cursor: pointer; transition: all 0.15s;
         }
