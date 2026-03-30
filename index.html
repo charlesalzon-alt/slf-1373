@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -25,6 +24,8 @@
             --amber-soft: #fef3c7;
             --red: #dc2626;
             --red-soft: #fee2e2;
+            --purple: #7c3aed;
+            --purple-soft: #ede9fe;
             --bg: #f8fafc;
             --surface: #ffffff;
             --surface-alt: #f1f5f9;
@@ -49,7 +50,6 @@
             line-height: 1.5;
         }
 
-        /* Header */
         .header {
             background: var(--navy);
             padding: 0 2rem;
@@ -59,111 +59,42 @@
             justify-content: space-between;
         }
 
-        .header-brand {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: -0.02em;
-        }
+        .header-brand { font-size: 1.25rem; font-weight: 700; color: #fff; letter-spacing: -0.02em; }
+        .header-brand span { color: var(--blue-accent); }
 
-        .header-brand span {
-            color: var(--blue-accent);
-        }
+        .header-right { display: flex; align-items: center; gap: 1.5rem; }
 
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .header-advisor {
-            display: flex;
-            align-items: center;
-            gap: 0.625rem;
-            color: rgba(255,255,255,0.7);
-            font-size: 0.8125rem;
-        }
+        .header-advisor { display: flex; align-items: center; gap: 0.625rem; color: rgba(255,255,255,0.7); font-size: 0.8125rem; }
 
         .advisor-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--navy-mid);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--blue-accent);
+            width: 32px; height: 32px; border-radius: 50%; background: var(--navy-mid);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; font-weight: 600; color: var(--blue-accent);
         }
 
-        .header-client {
-            color: #fff;
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
+        .header-client { color: #fff; font-size: 0.875rem; font-weight: 500; }
 
-        /* Container */
-        .container {
-            max-width: 1120px;
-            margin: 0 auto;
-            padding: 1.5rem;
-        }
+        .container { max-width: 1120px; margin: 0 auto; padding: 1.5rem; }
 
-        /* Welcome bar */
-        .welcome-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.5rem;
-        }
-
-        .welcome-bar h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .welcome-bar p {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            margin-top: 0.125rem;
-        }
+        .welcome-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+        .welcome-bar h1 { font-size: 1.5rem; font-weight: 600; color: var(--text-primary); }
+        .welcome-bar p { font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.125rem; }
 
         .date-badge {
-            font-size: 0.8125rem;
-            color: var(--text-muted);
-            background: var(--surface);
-            padding: 0.375rem 0.875rem;
-            border-radius: 20px;
-            border: 1px solid var(--border);
+            font-size: 0.8125rem; color: var(--text-muted); background: var(--surface);
+            padding: 0.375rem 0.875rem; border-radius: 20px; border: 1px solid var(--border);
         }
 
-        /* Signal banner */
         .signal-banner {
             background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
-            border-radius: var(--radius-md);
-            padding: 1.25rem 1.5rem;
-            margin-bottom: 1.5rem;
-            display: none;
-            align-items: center;
-            gap: 1rem;
-            color: #fff;
-            box-shadow: var(--shadow-md);
+            border-radius: var(--radius-md); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem;
+            display: none; align-items: center; gap: 1rem; color: #fff; box-shadow: var(--shadow-md);
         }
-
         .signal-banner.visible { display: flex; }
 
         .signal-banner-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: rgba(255,255,255,0.15);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.375rem;
-            flex-shrink: 0;
+            width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.15);
+            display: flex; align-items: center; justify-content: center; font-size: 1.375rem; flex-shrink: 0;
         }
 
         .signal-banner-text { flex: 1; }
@@ -171,543 +102,169 @@
         .signal-banner-text p { font-size: 0.8125rem; opacity: 0.85; margin-top: 0.125rem; }
 
         .signal-banner-action {
-            padding: 0.5rem 1.25rem;
-            background: #fff;
-            color: #065f46;
-            border: none;
-            border-radius: var(--radius-sm);
-            font-family: inherit;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: transform 0.15s;
+            padding: 0.5rem 1.25rem; background: #fff; color: #065f46; border: none;
+            border-radius: var(--radius-sm); font-family: inherit; font-size: 0.8125rem;
+            font-weight: 600; cursor: pointer; white-space: nowrap; transition: transform 0.15s;
         }
-
         .signal-banner-action:hover { transform: scale(1.02); }
 
-        /* Grid layout */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
 
         .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 1.5rem;
-            box-shadow: var(--shadow-sm);
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm);
         }
 
-        .card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1.25rem;
-        }
+        .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+        .card-title { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
 
-        .card-title {
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--text-muted);
-        }
-
-        .card-badge {
-            font-size: 0.6875rem;
-            font-weight: 600;
-            padding: 0.25rem 0.625rem;
-            border-radius: 12px;
-        }
-
+        .card-badge { font-size: 0.6875rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 12px; }
         .badge-green { background: var(--green-soft); color: var(--green); }
         .badge-blue { background: var(--blue-soft); color: var(--blue-accent); }
         .badge-amber { background: var(--amber-soft); color: var(--amber); }
 
-        /* Portfolio summary */
-        .portfolio-value {
-            font-size: 2.25rem;
-            font-weight: 700;
-            letter-spacing: -0.03em;
-            color: var(--text-primary);
-        }
-
-        .portfolio-change {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-top: 0.375rem;
-        }
-
+        .portfolio-value { font-size: 2.25rem; font-weight: 700; letter-spacing: -0.03em; color: var(--text-primary); }
+        .portfolio-change { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.875rem; font-weight: 600; margin-top: 0.375rem; }
         .portfolio-change.positive { color: var(--green); }
 
-        .portfolio-breakdown {
-            margin-top: 1.25rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
-        }
+        .portfolio-breakdown { margin-top: 1.25rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 
-        .breakdown-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.625rem 0.75rem;
-            background: var(--surface-alt);
-            border-radius: var(--radius-sm);
-        }
+        .breakdown-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem 0.75rem; background: var(--surface-alt); border-radius: var(--radius-sm); }
+        .breakdown-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .breakdown-label { font-size: 0.75rem; color: var(--text-secondary); flex: 1; }
+        .breakdown-value { font-size: 0.8125rem; font-weight: 600; color: var(--text-primary); }
 
-        .breakdown-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
+        .donut-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }
+        .donut-wrapper { position: relative; width: 200px; height: 200px; }
+        .donut-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+        .donut-center-label { font-size: 0.6875rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+        .donut-center-value { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); }
 
-        .breakdown-label {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            flex: 1;
-        }
+        .donut-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 1.25rem; }
+        .legend-item { display: flex; align-items: center; gap: 0.375rem; font-size: 0.75rem; color: var(--text-secondary); }
+        .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-        .breakdown-value {
-            font-size: 0.8125rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        /* Donut chart */
-        .donut-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-        }
-
-        .donut-wrapper {
-            position: relative;
-            width: 200px;
-            height: 200px;
-        }
-
-        .donut-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-        }
-
-        .donut-center-label {
-            font-size: 0.6875rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }
-
-        .donut-center-value {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .donut-legend {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1.25rem;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 0.375rem;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        .legend-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-
-        /* Property cards */
-        .properties-section {
-            margin-bottom: 1.5rem;
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-        }
-
-        .section-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .properties-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
+        .properties-section { margin-bottom: 1.5rem; }
+        .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+        .section-title { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
+        .properties-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
         .property-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 1.25rem;
-            box-shadow: var(--shadow-sm);
-            position: relative;
-            overflow: hidden;
-            transition: box-shadow 0.2s;
+            background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md);
+            padding: 1.25rem; box-shadow: var(--shadow-sm); position: relative; overflow: hidden; transition: box-shadow 0.2s;
         }
-
         .property-card:hover { box-shadow: var(--shadow-md); }
+        .property-card.highlighted { border-color: var(--teal); box-shadow: 0 0 0 1px var(--teal), var(--shadow-md); }
+        .property-card.highlighted::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--teal); }
 
-        .property-card.highlighted {
-            border-color: var(--teal);
-            box-shadow: 0 0 0 1px var(--teal), var(--shadow-md);
-        }
+        .property-type { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 0.5rem; }
+        .property-address { font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.125rem; }
+        .property-city { font-size: 0.8125rem; color: var(--text-secondary); margin-bottom: 1rem; }
 
-        .property-card.highlighted::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--teal);
-        }
+        .property-stats { display: flex; justify-content: space-between; align-items: flex-end; }
+        .property-value-label { font-size: 0.6875rem; color: var(--text-muted); margin-bottom: 0.125rem; }
+        .property-value-amount { font-size: 1.25rem; font-weight: 700; color: var(--text-primary); }
 
-        .property-type {
-            font-size: 0.6875rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
-        }
+        .property-change { display: flex; align-items: center; gap: 0.25rem; font-size: 0.8125rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 12px; }
+        .property-change.positive { color: var(--green); background: var(--green-soft); }
 
-        .property-address {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.125rem;
-        }
-
-        .property-city {
-            font-size: 0.8125rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-        }
-
-        .property-stats {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-
-        .property-value-label {
-            font-size: 0.6875rem;
-            color: var(--text-muted);
-            margin-bottom: 0.125rem;
-        }
-
-        .property-value-amount {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .property-change {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            padding: 0.25rem 0.625rem;
-            border-radius: 12px;
-        }
-
-        .property-change.positive {
-            color: var(--green);
-            background: var(--green-soft);
-        }
-
-        .property-signal {
-            display: flex;
-            align-items: center;
-            gap: 0.375rem;
-            margin-top: 0.75rem;
-            padding: 0.5rem 0.75rem;
-            background: var(--teal-soft);
-            border-radius: var(--radius-sm);
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: var(--teal);
-        }
-
-        .property-signal { display: none; }
+        .property-signal { display: none; align-items: center; gap: 0.375rem; margin-top: 0.75rem; padding: 0.5rem 0.75rem; background: var(--teal-soft); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 500; color: var(--teal); }
         .property-card.highlighted .property-signal { display: flex; }
 
-        /* CTA section */
+        .revenue-section { margin-bottom: 1.5rem; }
+        .revenue-card {
+            background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+            padding: 1.5rem; box-shadow: var(--shadow-sm);
+        }
+        .revenue-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+        .revenue-item { padding: 0.875rem; background: var(--surface-alt); border-radius: var(--radius-sm); }
+        .revenue-item-label { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 0.375rem; }
+        .revenue-item-value { font-size: 1.125rem; font-weight: 700; color: var(--text-primary); }
+        .revenue-item-detail { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem; }
+
         .cta-section {
             background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
-            border-radius: var(--radius-lg);
-            padding: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            margin-bottom: 1.5rem;
-            box-shadow: var(--shadow-lg);
+            border-radius: var(--radius-lg); padding: 2rem; display: flex; align-items: center;
+            gap: 2rem; margin-bottom: 1.5rem; box-shadow: var(--shadow-lg);
         }
-
         .cta-content { flex: 1; }
-
-        .cta-content h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #fff;
-            margin-bottom: 0.5rem;
-        }
-
-        .cta-content p {
-            font-size: 0.875rem;
-            color: rgba(255,255,255,0.7);
-            line-height: 1.6;
-            max-width: 520px;
-        }
+        .cta-content h2 { font-size: 1.25rem; font-weight: 600; color: #fff; margin-bottom: 0.5rem; }
+        .cta-content p { font-size: 0.875rem; color: rgba(255,255,255,0.7); line-height: 1.6; max-width: 520px; }
 
         .cta-button {
-            padding: 0.875rem 2rem;
-            background: #fff;
-            color: var(--navy);
-            border: none;
-            border-radius: var(--radius-sm);
-            font-family: inherit;
-            font-size: 0.9375rem;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.2s;
-            box-shadow: var(--shadow-md);
+            padding: 0.875rem 2rem; background: #fff; color: var(--navy); border: none;
+            border-radius: var(--radius-sm); font-family: inherit; font-size: 0.9375rem;
+            font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s; box-shadow: var(--shadow-md);
         }
-
         .cta-button:hover { transform: translateY(-1px); box-shadow: var(--shadow-lg); }
 
-        /* Demo controls */
-        .demo-controls {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-        }
+        .demo-controls { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 1.5rem; overflow: hidden; }
 
         .demo-toggle {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 1rem 1.5rem;
-            cursor: pointer;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            border: none;
-            background: none;
-            font-family: inherit;
-            width: 100%;
-            text-align: left;
-            transition: color 0.15s;
+            display: flex; align-items: center; gap: 0.5rem; padding: 1rem 1.5rem; cursor: pointer;
+            font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); border: none;
+            background: none; font-family: inherit; width: 100%; text-align: left; transition: color 0.15s;
         }
-
         .demo-toggle:hover { color: var(--text-secondary); }
         .demo-toggle .chevron { transition: transform 0.2s; font-size: 0.625rem; }
         .demo-toggle.open .chevron { transform: rotate(90deg); }
 
-        .demo-body {
-            display: none;
-            padding: 0 1.5rem 1.5rem;
-        }
-
+        .demo-body { display: none; padding: 0 1.5rem 1.5rem; }
         .demo-body.open { display: block; }
 
-        .demo-section-title {
-            font-size: 0.6875rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--text-muted);
-            margin-bottom: 0.75rem;
-            margin-top: 1rem;
-        }
-
+        .demo-section-title { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 0.75rem; margin-top: 1rem; }
         .demo-section-title:first-child { margin-top: 0; }
 
-        .demo-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 0.75rem;
-        }
+        .demo-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; }
+        .demo-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 
-        .demo-row-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
-        }
-
-        .demo-field label {
-            display: block;
-            font-size: 0.6875rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            margin-bottom: 0.375rem;
-        }
-
-        .demo-field label .var-hint {
-            font-family: 'JetBrains Mono', 'SF Mono', monospace;
-            font-size: 0.5625rem;
-            color: var(--text-muted);
-            font-weight: 400;
-        }
+        .demo-field label { display: block; font-size: 0.6875rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 0.375rem; }
+        .demo-field label .var-hint { font-family: 'JetBrains Mono', 'SF Mono', monospace; font-size: 0.5625rem; color: var(--text-muted); font-weight: 400; }
 
         .demo-field input, .demo-field select {
-            width: 100%;
-            padding: 0.5rem 0.75rem;
-            background: var(--surface-alt);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            color: var(--text-primary);
-            font-size: 0.8125rem;
-            font-family: inherit;
-            transition: border-color 0.15s;
+            width: 100%; padding: 0.5rem 0.75rem; background: var(--surface-alt); border: 1px solid var(--border);
+            border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.8125rem; font-family: inherit; transition: border-color 0.15s;
         }
+        .demo-field input:focus, .demo-field select:focus { outline: none; border-color: var(--blue-accent); }
 
-        .demo-field input:focus, .demo-field select:focus {
-            outline: none;
-            border-color: var(--blue-accent);
-        }
+        .toggle-row { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0; }
+        .toggle-label { font-size: 0.8125rem; font-weight: 500; color: var(--text-primary); }
 
-        /* isOnboarded toggle */
-        .toggle-row {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.75rem 0;
-        }
-
-        .toggle-label {
-            font-size: 0.8125rem;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .toggle-switch {
-            position: relative;
-            width: 48px;
-            height: 26px;
-            cursor: pointer;
-        }
-
+        .toggle-switch { position: relative; width: 48px; height: 26px; cursor: pointer; }
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
-
-        .toggle-slider {
-            position: absolute;
-            inset: 0;
-            background: var(--border);
-            border-radius: 13px;
-            transition: background 0.2s;
-        }
-
+        .toggle-slider { position: absolute; inset: 0; background: var(--border); border-radius: 13px; transition: background 0.2s; }
         .toggle-slider::before {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            left: 3px;
-            top: 3px;
-            background: #fff;
-            border-radius: 50%;
-            transition: transform 0.2s;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            content: ''; position: absolute; width: 20px; height: 20px; left: 3px; top: 3px;
+            background: #fff; border-radius: 50%; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
-
         .toggle-switch input:checked + .toggle-slider { background: var(--teal); }
         .toggle-switch input:checked + .toggle-slider::before { transform: translateX(22px); }
 
-        .toggle-status {
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 0.25rem 0.625rem;
-            border-radius: 12px;
-        }
-
+        .toggle-status { font-size: 0.75rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 12px; }
         .toggle-status.onboarded { background: var(--teal-soft); color: var(--teal); }
         .toggle-status.not-onboarded { background: var(--amber-soft); color: var(--amber); }
 
-        .demo-actions {
-            display: flex;
-            gap: 0.625rem;
-            margin-top: 1.25rem;
-        }
+        .demo-actions { display: flex; gap: 0.625rem; margin-top: 1.25rem; }
 
         .btn-trigger {
-            padding: 0.625rem 1.5rem;
-            background: var(--navy);
-            color: #fff;
-            border: none;
-            border-radius: var(--radius-sm);
-            font-family: inherit;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s;
+            padding: 0.625rem 1.5rem; background: var(--navy); color: #fff; border: none;
+            border-radius: var(--radius-sm); font-family: inherit; font-size: 0.8125rem; font-weight: 600; cursor: pointer; transition: all 0.15s;
         }
-
         .btn-trigger:hover { background: var(--navy-light); }
         .btn-trigger:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .btn-secondary {
-            padding: 0.625rem 1.25rem;
-            background: transparent;
-            color: var(--text-secondary);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-family: inherit;
-            font-size: 0.8125rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
+            padding: 0.625rem 1.25rem; background: transparent; color: var(--text-secondary);
+            border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: inherit;
+            font-size: 0.8125rem; font-weight: 500; cursor: pointer; transition: all 0.15s;
         }
-
         .btn-secondary:hover { background: var(--surface-alt); }
 
-        /* Log */
         .demo-log {
-            margin-top: 1rem;
-            max-height: 160px;
-            overflow-y: auto;
-            font-family: 'JetBrains Mono', 'SF Mono', monospace;
-            font-size: 0.6875rem;
-            line-height: 1.7;
-            background: var(--surface-alt);
-            border-radius: var(--radius-sm);
-            padding: 0.75rem;
+            margin-top: 1rem; max-height: 160px; overflow-y: auto;
+            font-family: 'JetBrains Mono', 'SF Mono', monospace; font-size: 0.6875rem; line-height: 1.7;
+            background: var(--surface-alt); border-radius: var(--radius-sm); padding: 0.75rem;
         }
-
         .demo-log::-webkit-scrollbar { width: 4px; }
         .demo-log::-webkit-scrollbar-track { background: transparent; }
         .demo-log::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
@@ -721,57 +278,26 @@
         .log-msg.info { color: var(--text-secondary); }
         .log-empty { color: var(--text-muted); font-style: italic; }
 
-        /* Toast */
         .toast {
-            position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            padding: 0.625rem 1.25rem;
-            background: var(--navy);
-            color: #fff;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            border-radius: var(--radius-sm);
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s;
-            pointer-events: none;
-            z-index: 100;
+            position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(10px);
+            padding: 0.625rem 1.25rem; background: var(--navy); color: #fff; font-size: 0.8125rem;
+            font-weight: 600; border-radius: var(--radius-sm); opacity: 0; transition: all 0.3s;
+            pointer-events: none; z-index: 200;
         }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        .toast.show { opacity: 1; transform: translateY(0); }
-
-        /* ElevenLabs widget positioning */
-        elevenlabs-convai {
-            position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            z-index: 50;
-        }
+        elevenlabs-convai { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 50; }
 
         @media (max-width: 768px) {
-            .dashboard-grid,
-            .properties-grid,
-            .demo-row,
-            .demo-row-2 {
-                grid-template-columns: 1fr;
-            }
-            .cta-section {
-                flex-direction: column;
-                text-align: center;
-            }
-            .header {
-                padding: 0 1rem;
-            }
-            .container {
-                padding: 1rem;
-            }
+            .dashboard-grid, .properties-grid, .demo-row, .demo-row-2, .revenue-grid { grid-template-columns: 1fr; }
+            .cta-section { flex-direction: column; text-align: center; }
+            .header { padding: 0 1rem; }
+            .container { padding: 1rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
     <div class="header">
         <div class="header-brand">your<span>_brand</span></div>
         <div class="header-right">
@@ -785,7 +311,6 @@
 
     <div class="container">
 
-        <!-- Welcome -->
         <div class="welcome-bar">
             <div>
                 <h1 id="welcomeName">Welcome, Thomas</h1>
@@ -794,55 +319,53 @@
             <div class="date-badge" id="dateDisplay">March 30, 2026</div>
         </div>
 
-        <!-- Signal banner (visible only in advisory mode with signal) -->
+        <!-- Signal banner (advisory mode only) -->
         <div class="signal-banner" id="signalBanner">
             <div class="signal-banner-icon">📈</div>
             <div class="signal-banner-text">
                 <h3>Real Estate Performance Alert</h3>
                 <p id="signalBannerText">Your property portfolio has appreciated — this may impact your asset allocation.</p>
             </div>
-            <button class="signal-banner-action" id="signalBannerCta">Review with Specialist</button>
+            <button class="signal-banner-action" onclick="openWidget()">Review with Specialist</button>
         </div>
 
-        <!-- Main grid -->
+        <!-- Main grid: Portfolio + Donut -->
         <div class="dashboard-grid">
 
-            <!-- Portfolio summary -->
             <div class="card">
                 <div class="card-header">
                     <span class="card-title">Portfolio Summary</span>
                     <span class="card-badge badge-green">+2.3% YTD</span>
                 </div>
-                <div class="portfolio-value" id="totalPortfolioValue">CHF 3,450,000</div>
+                <div class="portfolio-value" id="totalPortfolioValue">CHF 8,500,000</div>
                 <div class="portfolio-change positive">
                     <span>▲</span>
-                    <span>+CHF 78,200 this quarter</span>
+                    <span id="quarterChange">+CHF 192,000 this quarter</span>
                 </div>
                 <div class="portfolio-breakdown">
                     <div class="breakdown-item">
                         <div class="breakdown-dot" style="background:#3b82f6"></div>
                         <span class="breakdown-label">Equities</span>
-                        <span class="breakdown-value" id="equitiesValue">CHF 1,449,000</span>
-                    </div>
-                    <div class="breakdown-item">
-                        <div class="breakdown-dot" style="background:#8b5cf6"></div>
-                        <span class="breakdown-label">Fixed Income</span>
-                        <span class="breakdown-value" id="fixedIncomeValue">CHF 966,000</span>
+                        <span class="breakdown-value" id="equitiesValue">CHF 3,400,000</span>
                     </div>
                     <div class="breakdown-item">
                         <div class="breakdown-dot" style="background:#0d9488"></div>
                         <span class="breakdown-label">Real Estate</span>
-                        <span class="breakdown-value" id="realEstateValue">CHF 828,000</span>
+                        <span class="breakdown-value" id="realEstateValue">CHF 2,770,000</span>
                     </div>
                     <div class="breakdown-item">
                         <div class="breakdown-dot" style="background:#94a3b8"></div>
-                        <span class="breakdown-label">Cash & Alt.</span>
-                        <span class="breakdown-value" id="cashValue">CHF 207,000</span>
+                        <span class="breakdown-label">Cash</span>
+                        <span class="breakdown-value" id="cashValue">CHF 1,275,000</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <div class="breakdown-dot" style="background:#7c3aed"></div>
+                        <span class="breakdown-label">Others</span>
+                        <span class="breakdown-value" id="othersValue">CHF 1,055,000</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Donut chart -->
             <div class="card">
                 <div class="card-header">
                     <span class="card-title">Asset Allocation</span>
@@ -855,14 +378,14 @@
                         </svg>
                         <div class="donut-center">
                             <div class="donut-center-label">Total</div>
-                            <div class="donut-center-value" id="donutCenterValue">CHF 3.45M</div>
+                            <div class="donut-center-value" id="donutCenterValue">CHF 8.5M</div>
                         </div>
                     </div>
                     <div class="donut-legend">
-                        <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div> Equities <strong id="legendEquities">42%</strong></div>
-                        <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6"></div> Fixed Income <strong id="legendFixed">28%</strong></div>
-                        <div class="legend-item"><div class="legend-dot" style="background:#0d9488"></div> Real Estate <strong id="legendRE">24%</strong></div>
-                        <div class="legend-item"><div class="legend-dot" style="background:#94a3b8"></div> Cash & Alt. <strong id="legendCash">6%</strong></div>
+                        <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div> Equities <strong id="legendEquities">40%</strong></div>
+                        <div class="legend-item"><div class="legend-dot" style="background:#0d9488"></div> Real Estate <strong id="legendRE">33%</strong></div>
+                        <div class="legend-item"><div class="legend-dot" style="background:#94a3b8"></div> Cash <strong id="legendCash">15%</strong></div>
+                        <div class="legend-item"><div class="legend-dot" style="background:#7c3aed"></div> Others <strong id="legendOthers">12%</strong></div>
                     </div>
                 </div>
             </div>
@@ -909,13 +432,40 @@
             </div>
         </div>
 
-        <!-- Not-onboarded CTA (alternative to properties) -->
+        <!-- Revenue streams -->
+        <div class="revenue-section">
+            <div class="section-header">
+                <span class="section-title">Revenue Streams</span>
+                <span class="card-badge badge-blue">Annual Overview</span>
+            </div>
+            <div class="revenue-card">
+                <div class="revenue-grid">
+                    <div class="revenue-item">
+                        <div class="revenue-item-label">Fixed Income</div>
+                        <div class="revenue-item-value">CHF 38,500</div>
+                        <div class="revenue-item-detail">Bonds & structured products</div>
+                    </div>
+                    <div class="revenue-item">
+                        <div class="revenue-item-label">Dividends</div>
+                        <div class="revenue-item-value">CHF 68,000</div>
+                        <div class="revenue-item-detail">Equity portfolio yield ~2.0%</div>
+                    </div>
+                    <div class="revenue-item">
+                        <div class="revenue-item-label">Rental Income</div>
+                        <div class="revenue-item-value" id="rentalIncome">CHF 42,000</div>
+                        <div class="revenue-item-detail" id="rentalIncomeDetail">Seestrasse 15 — Investment property</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Not-onboarded CTA -->
         <div class="cta-section" id="onboardingCta" style="display:none">
             <div class="cta-content">
                 <h2>Complete Your Wealth Picture</h2>
                 <p>Your financial portfolio is being managed — but your real estate assets aren't yet monitored. Add your properties to get a holistic view of your wealth, track performance, and ensure your overall asset allocation stays aligned with your goals.</p>
             </div>
-            <button class="cta-button" id="onboardingCtaBtn">Get Started</button>
+            <button class="cta-button" onclick="openWidget()">Get Started</button>
         </div>
 
         <!-- Advisory CTA -->
@@ -924,7 +474,7 @@
                 <h2>Speak with Your Real Estate Specialist</h2>
                 <p id="advisoryCtaText">Your property portfolio is showing strong performance. Our real estate specialist can explain what this means for your overall asset allocation and financial goals.</p>
             </div>
-            <button class="cta-button" id="advisoryCtaBtn">Start Conversation</button>
+            <button class="cta-button" onclick="openWidget()">Start Conversation</button>
         </div>
 
         <!-- Demo controls -->
@@ -992,10 +542,6 @@
                 </div>
                 <div class="demo-row">
                     <div class="demo-field">
-                        <label>ElevenLabs Agent ID <span class="var-hint">→ agent_id</span></label>
-                        <input type="text" id="agent_id" value="">
-                    </div>
-                    <div class="demo-field">
                         <label>Webhook URL <span class="var-hint">→ webhook</span></label>
                         <input type="text" id="webhookUrl" value="">
                     </div>
@@ -1007,6 +553,10 @@
                             <option value="fr">French</option>
                             <option value="it">Italian</option>
                         </select>
+                    </div>
+                    <div class="demo-field">
+                        <label>Agent ID Override <span class="var-hint">→ optional</span></label>
+                        <input type="text" id="agent_id_override" placeholder="Leave blank to use default">
                     </div>
                 </div>
 
@@ -1026,8 +576,13 @@
 
     <div class="toast" id="toast"></div>
 
+    <!-- ElevenLabs widget — always present -->
+    <elevenlabs-convai agent-id="agent_5001kmzh8p48fm0th0gtjpv9adaa" server-location="eu-residency"></elevenlabs-convai>
+    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+
     <script>
-        const STORAGE_KEY = 'wealth-dashboard-config-v1';
+        const STORAGE_KEY = 'wealth-dashboard-config-v2';
+        const DEFAULT_AGENT_ID = 'agent_5001kmzh8p48fm0th0gtjpv9adaa';
 
         const $ = id => document.getElementById(id);
 
@@ -1043,7 +598,7 @@
             brand_name: $('brand_name'),
             advisor_name: $('advisor_name'),
             value_change_percent: $('value_change_percent'),
-            agent_id: $('agent_id'),
+            agent_id_override: $('agent_id_override'),
             webhookUrl: $('webhookUrl'),
             language_spoken: $('language_spoken'),
             triggerCall: $('triggerCall'),
@@ -1054,11 +609,8 @@
             logContainer: $('logContainer'),
             toast: $('toast'),
             signalBanner: $('signalBanner'),
-            signalBannerCta: $('signalBannerCta'),
             onboardingCta: $('onboardingCta'),
-            onboardingCtaBtn: $('onboardingCtaBtn'),
             advisoryCta: $('advisoryCta'),
-            advisoryCtaBtn: $('advisoryCtaBtn'),
         };
 
         const DEFAULTS = {
@@ -1072,7 +624,7 @@
             brand_name: 'your_brand',
             advisor_name: 'Dr. Martin Weber',
             value_change_percent: '+8.2%',
-            agent_id: '',
+            agent_id_override: '',
             webhookUrl: '',
             language_spoken: 'en',
         };
@@ -1080,8 +632,12 @@
         const PERSIST_FIELDS = [
             'firstName', 'lastName', 'phone_number', 'email', 'property_address',
             'estimated_value', 'brand_name', 'advisor_name', 'value_change_percent',
-            'agent_id', 'webhookUrl', 'language_spoken',
+            'agent_id_override', 'webhookUrl', 'language_spoken',
         ];
+
+        function getAgentId() {
+            return (els.agent_id_override && els.agent_id_override.value) || DEFAULT_AGENT_ID;
+        }
 
         // --- Config ---
 
@@ -1115,7 +671,7 @@
         function showToast(msg) {
             els.toast.textContent = msg;
             els.toast.classList.add('show');
-            setTimeout(() => els.toast.classList.remove('show'), 2000);
+            setTimeout(() => els.toast.classList.remove('show'), 2500);
         }
 
         // --- Logging ---
@@ -1133,7 +689,54 @@
             els.logContainer.scrollTop = els.logContainer.scrollHeight;
         }
 
+        // --- Widget interaction ---
+
+        function openWidget() {
+            const widget = document.querySelector('elevenlabs-convai');
+            if (!widget) return;
+
+            updateWidgetVars();
+
+            try {
+                const shadow = widget.shadowRoot;
+                if (shadow) {
+                    const btn = shadow.querySelector('button') || shadow.querySelector('[role="button"]') || shadow.querySelector('.trigger');
+                    if (btn) { btn.click(); return; }
+                }
+            } catch (_) {}
+
+            widget.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            showToast('Click the chat bubble in the bottom-right to start');
+        }
+
+        function updateWidgetVars() {
+            const widget = document.querySelector('elevenlabs-convai');
+            if (!widget) return;
+
+            const agentId = getAgentId();
+            if (widget.getAttribute('agent-id') !== agentId) {
+                widget.setAttribute('agent-id', agentId);
+            }
+
+            const vars = {
+                brand_name: els.brand_name.value || DEFAULTS.brand_name,
+                name: `${els.firstName.value || DEFAULTS.firstName} ${els.lastName.value || DEFAULTS.lastName}`.trim(),
+                advisor_name: els.advisor_name.value || DEFAULTS.advisor_name,
+                isOnboarded: String(els.isOnboarded.checked),
+                property_address: els.property_address.value || DEFAULTS.property_address,
+                estimated_value: els.estimated_value.value || DEFAULTS.estimated_value,
+                value_change_percent: els.value_change_percent.value || DEFAULTS.value_change_percent,
+                language_spoken: els.language_spoken.value || 'en',
+            };
+            widget.setAttribute('dynamic-variables', JSON.stringify(vars));
+        }
+
         // --- Dashboard mode switching ---
+
+        // Portfolio constants
+        const PROPERTY_1_VALUE = 1850000;
+        const PROPERTY_2_VALUE = 920000;
+        const TOTAL_RE = PROPERTY_1_VALUE + PROPERTY_2_VALUE; // 2,770,000
 
         function updateDashboardMode() {
             const onboarded = els.isOnboarded.checked;
@@ -1141,26 +744,20 @@
             const lastName = els.lastName.value || DEFAULTS.lastName;
             const advisorName = els.advisor_name.value || DEFAULTS.advisor_name;
 
-            // Toggle label
             els.toggleStatusLabel.textContent = onboarded ? 'Advisory Mode' : 'Onboarding Mode';
             els.toggleStatusLabel.className = 'toggle-status ' + (onboarded ? 'onboarded' : 'not-onboarded');
 
-            // Update header displays
             $('welcomeName').textContent = `Welcome, ${firstName}`;
             $('clientDisplay').textContent = `${firstName} ${lastName}`;
             $('advisorDisplay').textContent = advisorName;
             $('advisorAvatar').textContent = advisorName.split(' ').map(w => w[0]).filter((_, i, a) => i === 0 || i === a.length - 1).join('').toUpperCase().slice(0, 2);
 
-            // Signal banner
             els.signalBanner.classList.toggle('visible', onboarded);
 
-            // Property cards
             document.querySelectorAll('.property-card').forEach(c => c.classList.toggle('highlighted', onboarded));
 
-            // Show/hide sections
             $('onboardingCta').style.display = onboarded ? 'none' : 'flex';
             $('advisoryCta').style.display = onboarded ? 'flex' : 'none';
-            document.querySelector('.properties-section').style.display = onboarded ? 'block' : 'block';
 
             if (!onboarded) {
                 $('rePropertiesCount').textContent = 'Not Yet Monitored';
@@ -1170,6 +767,8 @@
                     c.style.filter = 'blur(2px)';
                     c.style.pointerEvents = 'none';
                 });
+                $('rentalIncome').textContent = '—';
+                $('rentalIncomeDetail').textContent = 'No monitored investment properties';
             } else {
                 $('rePropertiesCount').textContent = '2 Properties Monitored';
                 $('rePropertiesCount').className = 'card-badge badge-green';
@@ -1178,32 +777,42 @@
                     c.style.filter = 'none';
                     c.style.pointerEvents = 'auto';
                 });
+                $('rentalIncome').textContent = 'CHF 42,000';
+                $('rentalIncomeDetail').textContent = 'Seestrasse 15 — Investment property';
             }
 
-            // Update donut chart for allocation shift
-            updateDonutChart(onboarded);
-
-            // Update CTA text
             if (onboarded) {
                 $('advisoryCtaText').textContent = `Your property portfolio is showing strong performance (${els.value_change_percent.value || '+8.2%'}). Our real estate specialist can explain what this means for your overall asset allocation and financial goals.`;
             }
 
-            // Update ElevenLabs widget
-            updateWidget();
+            updateDonutChart(onboarded);
+            updateWidgetVars();
         }
 
         // --- Donut chart ---
 
+        function fmt(n) { return 'CHF ' + n.toLocaleString('en-CH'); }
+
         function updateDonutChart(onboarded) {
-            const allocations = onboarded
-                ? { equities: 38, fixed: 26, realEstate: 30, cash: 6 }
-                : { equities: 42, fixed: 28, realEstate: 24, cash: 6 };
+            /*
+             * Onboarded (advisory): RE = CHF 2,770,000 (actual monitored property values)
+             * Total = CHF 8,500,000
+             * Not onboarded: RE is lower estimate; financial assets unchanged
+             */
+            const equities = 3400000;
+            const cash = 1275000;
+            const others = 1055000;
+            const re = onboarded ? TOTAL_RE : 2200000;
+            const total = equities + re + cash + others;
 
-            const total = 3450000;
-            const colors = ['#3b82f6', '#8b5cf6', '#0d9488', '#94a3b8'];
-            const values = [allocations.equities, allocations.fixed, allocations.realEstate, allocations.cash];
+            const pctEquities = Math.round(equities / total * 100);
+            const pctRE = Math.round(re / total * 100);
+            const pctCash = Math.round(cash / total * 100);
+            const pctOthers = 100 - pctEquities - pctRE - pctCash;
 
-            // SVG donut
+            const colors = ['#3b82f6', '#0d9488', '#94a3b8', '#7c3aed'];
+            const values = [pctEquities, pctRE, pctCash, pctOthers];
+
             const svg = $('donutChart');
             svg.innerHTML = '';
             const r = 80;
@@ -1226,19 +835,22 @@
                 offset += segLen;
             });
 
-            // Update labels
-            $('legendEquities').textContent = allocations.equities + '%';
-            $('legendFixed').textContent = allocations.fixed + '%';
-            $('legendRE').textContent = allocations.realEstate + '%';
-            $('legendCash').textContent = allocations.cash + '%';
+            $('legendEquities').textContent = pctEquities + '%';
+            $('legendRE').textContent = pctRE + '%';
+            $('legendCash').textContent = pctCash + '%';
+            $('legendOthers').textContent = pctOthers + '%';
 
-            // Update breakdown values
-            $('equitiesValue').textContent = 'CHF ' + Math.round(total * allocations.equities / 100).toLocaleString();
-            $('fixedIncomeValue').textContent = 'CHF ' + Math.round(total * allocations.fixed / 100).toLocaleString();
-            $('realEstateValue').textContent = 'CHF ' + Math.round(total * allocations.realEstate / 100).toLocaleString();
-            $('cashValue').textContent = 'CHF ' + Math.round(total * allocations.cash / 100).toLocaleString();
+            $('equitiesValue').textContent = fmt(equities);
+            $('realEstateValue').textContent = fmt(re);
+            $('cashValue').textContent = fmt(cash);
+            $('othersValue').textContent = fmt(others);
 
-            // Badge
+            $('totalPortfolioValue').textContent = fmt(total);
+            $('donutCenterValue').textContent = 'CHF ' + (total / 1000000).toFixed(1) + 'M';
+
+            const quarterDelta = Math.round(total * 0.023);
+            $('quarterChange').textContent = '+CHF ' + quarterDelta.toLocaleString('en-CH') + ' this quarter';
+
             if (onboarded) {
                 $('allocationBadge').textContent = 'RE Overweight';
                 $('allocationBadge').className = 'card-badge badge-amber';
@@ -1248,35 +860,6 @@
             }
         }
 
-        // --- ElevenLabs widget ---
-
-        function updateWidget() {
-            const existing = document.querySelector('elevenlabs-convai');
-            if (existing) existing.remove();
-
-            const agentId = els.agent_id.value;
-            if (!agentId) return;
-
-            const widget = document.createElement('elevenlabs-convai');
-            widget.setAttribute('agent-id', agentId);
-            widget.setAttribute('server-location', 'eu-residency');
-            widget.setAttribute('language', els.language_spoken.value || 'en');
-
-            const vars = {
-                brand_name: els.brand_name.value || DEFAULTS.brand_name,
-                name: `${els.firstName.value || DEFAULTS.firstName} ${els.lastName.value || DEFAULTS.lastName}`.trim(),
-                advisor_name: els.advisor_name.value || DEFAULTS.advisor_name,
-                isOnboarded: String(els.isOnboarded.checked),
-                property_address: els.property_address.value || DEFAULTS.property_address,
-                estimated_value: els.estimated_value.value || DEFAULTS.estimated_value,
-                value_change_percent: els.value_change_percent.value || DEFAULTS.value_change_percent,
-                language_spoken: els.language_spoken.value || 'en',
-            };
-            widget.setAttribute('dynamic-variables', JSON.stringify(vars));
-
-            document.body.appendChild(widget);
-        }
-
         // --- Webhook ---
 
         function v(el, fallback) { return (el && el.value) || fallback || ''; }
@@ -1284,25 +867,17 @@
         async function fireWebhook(url, payload) {
             const jsonBody = JSON.stringify(payload);
             try {
-                const resp = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: jsonBody,
-                });
+                const resp = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: jsonBody });
                 let body = null;
                 try { body = await resp.json(); } catch (_) {}
                 return { status: resp.status, body, ok: resp.ok, mode: 'cors' };
-            } catch (corsErr) {
+            } catch (_) {
                 try {
-                    const resp = await fetch(url, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'text/plain' },
-                        body: jsonBody,
-                    });
+                    const resp = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: jsonBody });
                     let body = null;
                     try { body = await resp.json(); } catch (_) {}
                     return { status: resp.status, body, ok: resp.ok, mode: 'text-plain' };
-                } catch (corsErr2) {
+                } catch (_) {
                     return { status: 0, body: null, ok: true, mode: 'opaque' };
                 }
             }
@@ -1310,11 +885,9 @@
 
         async function triggerOutboundCall() {
             const webhookUrl = els.webhookUrl.value;
-            const agentId = els.agent_id.value;
-
-            if (!webhookUrl && !agentId) {
-                log('No webhook URL or agent ID configured — open demo controls', 'err');
-                showToast('Configure agent ID or webhook URL first');
+            if (!webhookUrl) {
+                log('No webhook URL configured — open demo controls', 'err');
+                showToast('Configure webhook URL first');
                 return;
             }
 
@@ -1323,14 +896,13 @@
             const lastName = v(els.lastName, DEFAULTS.lastName);
             const mode = els.isOnboarded.checked ? 'ADVISORY' : 'ONBOARDING';
 
-            log(`Triggering ${mode} call for ${firstName} ${lastName}...`, 'warn');
+            log(`Triggering ${mode} outbound call for ${firstName} ${lastName}...`, 'warn');
 
             const payload = {
                 signal_type: els.isOnboarded.checked ? 'valuation_increase' : 'onboarding_outreach',
                 mode: mode,
                 isOnboarded: String(els.isOnboarded.checked),
-                firstName: firstName,
-                lastName: lastName,
+                firstName, lastName,
                 name: `${firstName} ${lastName}`.trim(),
                 phone_number: v(els.phone_number, DEFAULTS.phone_number),
                 email: v(els.email, DEFAULTS.email),
@@ -1339,24 +911,19 @@
                 value_change_percent: v(els.value_change_percent, DEFAULTS.value_change_percent),
                 brand_name: v(els.brand_name, DEFAULTS.brand_name),
                 advisor_name: v(els.advisor_name, DEFAULTS.advisor_name),
-                agent_id: agentId,
+                agent_id: getAgentId(),
                 language_spoken: v(els.language_spoken, DEFAULTS.language_spoken),
             };
 
-            if (webhookUrl) {
-                try {
-                    const result = await fireWebhook(webhookUrl, payload);
-                    log(`Webhook response: HTTP ${result.status} (${result.mode})`, result.ok ? 'ok' : 'err');
-                } catch (err) {
-                    log(`Webhook failed: ${err.message}`, 'err');
-                }
-            } else {
-                log('No webhook URL — payload logged only', 'info');
+            try {
+                const result = await fireWebhook(webhookUrl, payload);
+                log(`Webhook response: HTTP ${result.status} (${result.mode})`, result.ok ? 'ok' : 'err');
+            } catch (err) {
+                log(`Webhook failed: ${err.message}`, 'err');
             }
 
-            log(`Payload: ${JSON.stringify(payload).substring(0, 100)}...`, 'info');
-            log(`${mode} call triggered`, 'ok');
-
+            log(`Payload: ${JSON.stringify(payload).substring(0, 120)}...`, 'info');
+            log(`${mode} outbound call triggered`, 'ok');
             els.triggerCall.disabled = false;
         }
 
@@ -1372,39 +939,6 @@
             els.demoToggle.classList.toggle('open', open);
         });
 
-        els.signalBannerCta.addEventListener('click', () => {
-            if (els.agent_id.value) {
-                updateWidget();
-                showToast('Widget activated');
-            } else {
-                els.demoBody.classList.add('open');
-                els.demoToggle.classList.add('open');
-                showToast('Configure agent ID first');
-            }
-        });
-
-        els.advisoryCtaBtn.addEventListener('click', () => {
-            if (els.agent_id.value) {
-                updateWidget();
-                showToast('Widget activated — speak with your specialist');
-            } else {
-                els.demoBody.classList.add('open');
-                els.demoToggle.classList.add('open');
-                showToast('Configure agent ID in demo controls');
-            }
-        });
-
-        els.onboardingCtaBtn.addEventListener('click', () => {
-            if (els.agent_id.value) {
-                updateWidget();
-                showToast('Widget activated — start onboarding');
-            } else {
-                els.demoBody.classList.add('open');
-                els.demoToggle.classList.add('open');
-                showToast('Configure agent ID in demo controls');
-            }
-        });
-
         [...document.querySelectorAll('.demo-field input, .demo-field select')].forEach(el => {
             el.addEventListener('change', () => { updateDashboardMode(); });
         });
@@ -1414,7 +948,7 @@
         $('dateDisplay').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
         loadConfig();
         updateDashboardMode();
-        log('Wealth dashboard ready — configure agent ID in demo controls to enable voice/chat', 'info');
+        log('Wealth dashboard ready — widget active', 'ok');
     </script>
 </body>
 </html>
