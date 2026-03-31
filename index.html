@@ -218,6 +218,20 @@
         .property-value-amount { font-size: 1.25rem; font-weight: 700; color: #fff; }
         .property-change { display: flex; align-items: center; gap: 0.25rem; font-size: 0.8125rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 12px; }
         .property-change.positive { color: var(--green); background: var(--green-dim); }
+        .property-scores { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 1rem; padding-top: 0.875rem; border-top: 1px solid var(--border); }
+        .score-pill { display: flex; align-items: center; justify-content: space-between; padding: 0.375rem 0.625rem; background: var(--surface-alt); border-radius: var(--radius-sm); border: 1px solid transparent; transition: border-color 0.15s; }
+        .score-pill:hover { border-color: var(--border); }
+        .score-label { font-size: 0.625rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
+        .score-bar-wrap { display: flex; align-items: center; gap: 0.375rem; }
+        .score-bar { width: 36px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.06); overflow: hidden; }
+        .score-bar-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
+        .score-value { font-size: 0.6875rem; font-weight: 700; min-width: 1.5rem; text-align: right; }
+        .score-excellent .score-bar-fill { background: var(--green); } .score-excellent .score-value { color: var(--green); }
+        .score-good .score-bar-fill { background: var(--blue); } .score-good .score-value { color: var(--blue); }
+        .score-average .score-bar-fill { background: var(--amber); } .score-average .score-value { color: var(--amber); }
+        .score-low .score-bar-fill { background: var(--red); } .score-low .score-value { color: var(--red); }
+        .score-na .score-value { color: var(--text-muted); }
+
         .property-signal { display: none; align-items: center; gap: 0.375rem; margin-top: 0.75rem; padding: 0.5rem 0.75rem; background: var(--teal-dim); border: 1px solid rgba(45,212,191,0.1); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 500; color: var(--teal); }
         .property-card.highlighted .property-signal { display: flex; }
 
@@ -332,6 +346,8 @@
 
             .dashboard-grid { gap: 1rem; }
             .dashboard-grid, .properties-grid, .demo-row, .demo-row-2, .revenue-grid { grid-template-columns: 1fr; }
+            .demo-row[style*="grid-template-columns:1fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; }
+            .property-scores { grid-template-columns: 1fr 1fr; }
 
             .card { padding: 1.125rem; }
             .card-header { margin-bottom: 1rem; }
@@ -526,22 +542,24 @@
                 <div class="properties-grid">
                     <div class="property-card" id="property1">
                         <div class="property-type">Primary Residence</div>
-                        <div class="property-address" id="property1Address">Bahnhofstrasse 42</div>
-                        <div class="property-city" id="property1City">8001 Zurich, Switzerland</div>
+                        <div class="property-address" id="prop1Address">Bahnhofstrasse 42</div>
+                        <div class="property-city" id="prop1City">8001 Zurich, Switzerland</div>
                         <div class="property-stats">
-                            <div><div class="property-value-label">Current Estimate</div><div class="property-value-amount" id="property1Value">CHF 1,850,000</div></div>
-                            <div class="property-change positive" id="property1Change">▲ +8.2%</div>
+                            <div><div class="property-value-label">Current Estimate</div><div class="property-value-amount" id="prop1Value">CHF 1,850,000</div></div>
+                            <div class="property-change positive" id="prop1Change">▲ +8.2%</div>
                         </div>
+                        <div class="property-scores" id="prop1Scores"></div>
                         <div class="property-signal"><span>📊</span> Strong market performance detected — allocation impact review recommended</div>
                     </div>
                     <div class="property-card" id="property2">
                         <div class="property-type">Investment Property</div>
-                        <div class="property-address">Seestrasse 15</div>
-                        <div class="property-city">8002 Zurich, Switzerland</div>
+                        <div class="property-address" id="prop2Address">Seestrasse 15</div>
+                        <div class="property-city" id="prop2City">8002 Zurich, Switzerland</div>
                         <div class="property-stats">
-                            <div><div class="property-value-label">Current Estimate</div><div class="property-value-amount">CHF 920,000</div></div>
-                            <div class="property-change positive">▲ +12.1%</div>
+                            <div><div class="property-value-label">Current Estimate</div><div class="property-value-amount" id="prop2Value">CHF 920,000</div></div>
+                            <div class="property-change positive" id="prop2Change">▲ +12.1%</div>
                         </div>
+                        <div class="property-scores" id="prop2Scores"></div>
                         <div class="property-signal"><span>📊</span> Strong market performance detected — allocation impact review recommended</div>
                     </div>
                 </div>
@@ -588,19 +606,43 @@
                     </div>
                     <div class="demo-row">
                         <div class="demo-field"><label>Email <span class="var-hint">→ email</span></label><input type="email" id="email" value="thomas.keller@example.com"></div>
-                        <div class="demo-field"><label>Property Address <span class="var-hint">→ property_address</span></label><input type="text" id="property_address" value="Bahnhofstrasse 42, 8001 Zurich"></div>
-                        <div class="demo-field"><label>Estimated Value <span class="var-hint">→ estimated_value</span></label><input type="text" id="estimated_value" value="CHF 1,850,000"></div>
+                        <div class="demo-field"><label>Language <span class="var-hint">→ language_spoken</span></label><select id="language_spoken"><option value="en" selected>English</option><option value="de">German</option><option value="fr">French</option><option value="it">Italian</option></select></div>
+                        <div class="demo-field"></div>
+                    </div>
+                    <div class="demo-section-title">Property 1 — Primary Residence</div>
+                    <div class="demo-row">
+                        <div class="demo-field"><label>Address <span class="var-hint">→ properties[0].address</span></label><input type="text" id="p1_address" value="Bahnhofstrasse 42, 8001 Zurich"></div>
+                        <div class="demo-field"><label>Estimated Value <span class="var-hint">→ properties[0].estimated_value</span></label><input type="text" id="p1_value" value="CHF 1,850,000"></div>
+                        <div class="demo-field"><label>Value Change <span class="var-hint">→ properties[0].value_change_percent</span></label><input type="text" id="p1_change" value="+8.2%"></div>
+                    </div>
+                    <div class="demo-row" style="grid-template-columns:1fr 1fr 1fr 1fr">
+                        <div class="demo-field"><label>Performance <span class="var-hint">→ scores (0–100)</span></label><input type="number" id="p1_score_perf" value="82" min="0" max="100"></div>
+                        <div class="demo-field"><label>Yield <span class="var-hint">→ scores (0–100)</span></label><input type="number" id="p1_score_yield" value="" placeholder="n/a"></div>
+                        <div class="demo-field"><label>Market <span class="var-hint">→ scores (0–100)</span></label><input type="number" id="p1_score_market" value="74" min="0" max="100"></div>
+                        <div class="demo-field"><label>Energy <span class="var-hint">→ scores (0–100)</span></label><input type="number" id="p1_score_energy" value="41" min="0" max="100"></div>
+                    </div>
+                    <div class="demo-section-title">Property 2 — Investment Property</div>
+                    <div class="demo-row">
+                        <div class="demo-field"><label>Address <span class="var-hint">→ properties[1].address</span></label><input type="text" id="p2_address" value="Seestrasse 15, 8002 Zurich"></div>
+                        <div class="demo-field"><label>Estimated Value <span class="var-hint">→ properties[1].estimated_value</span></label><input type="text" id="p2_value" value="CHF 920,000"></div>
+                        <div class="demo-field"><label>Value Change <span class="var-hint">→ properties[1].value_change_percent</span></label><input type="text" id="p2_change" value="+12.1%"></div>
+                    </div>
+                    <div class="demo-row" style="grid-template-columns:1fr 1fr 1fr 1fr">
+                        <div class="demo-field"><label>Performance <span class="var-hint">→ scores (0–100)</span></label><input type="number" id="p2_score_perf" value="91" min="0" max="100"></div>
+                        <div class="demo-field"><label>Yield <span class="var-hint">→ scores (0–100)</span></label><input type="number" id="p2_score_yield" value="65" min="0" max="100"></div>
+                        <div class="demo-field"><label>Market <span class="var-hint">→ scores (0–100)</span></label><input type="number" id="p2_score_market" value="78" min="0" max="100"></div>
+                        <div class="demo-field"><label>Energy <span class="var-hint">→ scores (0–100)</span></label><input type="number" id="p2_score_energy" value="53" min="0" max="100"></div>
                     </div>
                     <div class="demo-section-title">Branding & Agent</div>
                     <div class="demo-row">
                         <div class="demo-field"><label>Brand Name <span class="var-hint">→ brand_name</span></label><input type="text" id="brand_name" value="your_brand"></div>
                         <div class="demo-field"><label>Advisor Name <span class="var-hint">→ advisor_name</span></label><input type="text" id="advisor_name" value="Dr. Martin Weber"></div>
-                        <div class="demo-field"><label>Value Change % <span class="var-hint">→ value_change_percent</span></label><input type="text" id="value_change_percent" value="+8.2%"></div>
+                        <div class="demo-field"><label>Agent ID Override <span class="var-hint">→ optional</span></label><input type="text" id="agent_id_override" placeholder="Leave blank to use default"></div>
                     </div>
                     <div class="demo-row">
                         <div class="demo-field"><label>Webhook URL <span class="var-hint">→ webhook</span></label><input type="text" id="webhookUrl" value=""></div>
-                        <div class="demo-field"><label>Language <span class="var-hint">→ language_spoken</span></label><select id="language_spoken"><option value="en" selected>English</option><option value="de">German</option><option value="fr">French</option><option value="it">Italian</option></select></div>
-                        <div class="demo-field"><label>Agent ID Override <span class="var-hint">→ optional</span></label><input type="text" id="agent_id_override" placeholder="Leave blank to use default"></div>
+                        <div class="demo-field"></div>
+                        <div class="demo-field"></div>
                     </div>
                     <div class="demo-actions">
                         <button class="btn-trigger" id="triggerCall">Trigger Outbound Call</button>
@@ -621,87 +663,107 @@
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 
 <script>
-    const STORAGE_KEY = 'wealth-dashboard-config-v2';
+    const STORAGE_KEY = 'wealth-dashboard-config-v3';
     const DEFAULT_AGENT_ID = 'agent_5001kmzh8p48fm0th0gtjpv9adaa';
     const $ = id => document.getElementById(id);
 
-    // Sidebar toggle
-    const sidebar = $('sidebar');
-    const overlay = $('sidebarOverlay');
-    const burgerBtn = $('burgerBtn');
-
-    function toggleSidebar() {
-        sidebar.classList.toggle('open');
-        overlay.classList.toggle('visible');
-    }
+    const sidebar = $('sidebar'), overlay = $('sidebarOverlay'), burgerBtn = $('burgerBtn');
+    function toggleSidebar() { sidebar.classList.toggle('open'); overlay.classList.toggle('visible'); }
     burgerBtn.addEventListener('click', toggleSidebar);
     overlay.addEventListener('click', toggleSidebar);
-
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', () => {
-            if (item.dataset.page && item.dataset.page !== 'assistant') {
-                showToast('Page "' + item.textContent.trim() + '" — placeholder');
-            }
+            if (item.dataset.page && item.dataset.page !== 'assistant') showToast('Page "' + item.textContent.trim() + '" — placeholder');
             if (window.innerWidth <= 900) toggleSidebar();
         });
     });
 
-    const els = {
-        isOnboarded: $('isOnboarded'), toggleStatusLabel: $('toggleStatusLabel'),
-        firstName: $('firstName'), lastName: $('lastName'), phone_number: $('phone_number'),
-        email: $('email'), property_address: $('property_address'), estimated_value: $('estimated_value'),
-        brand_name: $('brand_name'), advisor_name: $('advisor_name'), value_change_percent: $('value_change_percent'),
-        agent_id_override: $('agent_id_override'), webhookUrl: $('webhookUrl'), language_spoken: $('language_spoken'),
-        triggerCall: $('triggerCall'), saveConfig: $('saveConfig'), clearConfig: $('clearConfig'),
-        demoToggle: $('demoToggle'), demoBody: $('demoBody'), logContainer: $('logContainer'),
-        toast: $('toast'), signalBanner: $('signalBanner'), onboardingCta: $('onboardingCta'), advisoryCta: $('advisoryCta'),
-    };
+    const PROP_FIELDS = ['address','value','change','score_perf','score_yield','score_market','score_energy'];
+    const GENERAL_FIELDS = ['firstName','lastName','phone_number','email','brand_name','advisor_name','agent_id_override','webhookUrl','language_spoken'];
 
     const DEFAULTS = {
         isOnboarded: true, firstName: 'Thomas', lastName: 'Keller',
         phone_number: '+41791234567', email: 'thomas.keller@example.com',
-        property_address: 'Bahnhofstrasse 42, 8001 Zurich', estimated_value: 'CHF 1,850,000',
-        brand_name: 'your_brand', advisor_name: 'Dr. Martin Weber', value_change_percent: '+8.2%',
+        brand_name: 'your_brand', advisor_name: 'Dr. Martin Weber',
         agent_id_override: '', webhookUrl: '', language_spoken: 'en',
+        p1_address: 'Bahnhofstrasse 42, 8001 Zurich', p1_value: 'CHF 1,850,000', p1_change: '+8.2%',
+        p1_score_perf: '82', p1_score_yield: '', p1_score_market: '74', p1_score_energy: '41',
+        p2_address: 'Seestrasse 15, 8002 Zurich', p2_value: 'CHF 920,000', p2_change: '+12.1%',
+        p2_score_perf: '91', p2_score_yield: '65', p2_score_market: '78', p2_score_energy: '53',
     };
 
-    const PERSIST_FIELDS = ['firstName','lastName','phone_number','email','property_address','estimated_value','brand_name','advisor_name','value_change_percent','agent_id_override','webhookUrl','language_spoken'];
+    function el(id) { return $(id); }
+    function v(id, fb) { const e = $(id); return (e && e.value) || fb || ''; }
+    function getAgentId() { return v('agent_id_override') || DEFAULT_AGENT_ID; }
 
-    function getAgentId() { return (els.agent_id_override && els.agent_id_override.value) || DEFAULT_AGENT_ID; }
+    function parseScore(id) { const val = v(id); return val === '' ? null : Math.max(0, Math.min(100, parseInt(val, 10) || 0)); }
+
+    function buildPropertiesArray() {
+        return [
+            { label: 'Primary Residence', address: v('p1_address', DEFAULTS.p1_address), estimated_value: v('p1_value', DEFAULTS.p1_value), value_change_percent: v('p1_change', DEFAULTS.p1_change),
+              scores: { performance: parseScore('p1_score_perf'), yield: parseScore('p1_score_yield'), market: parseScore('p1_score_market'), energy: parseScore('p1_score_energy') } },
+            { label: 'Investment Property', address: v('p2_address', DEFAULTS.p2_address), estimated_value: v('p2_value', DEFAULTS.p2_value), value_change_percent: v('p2_change', DEFAULTS.p2_change),
+              scores: { performance: parseScore('p2_score_perf'), yield: parseScore('p2_score_yield'), market: parseScore('p2_score_market'), energy: parseScore('p2_score_energy') } },
+        ];
+    }
+
+    function scoreClass(val) {
+        if (val === null) return 'score-na';
+        if (val >= 80) return 'score-excellent';
+        if (val >= 60) return 'score-good';
+        if (val >= 40) return 'score-average';
+        return 'score-low';
+    }
+
+    function renderScores(containerId, scores) {
+        const c = $(containerId); if (!c) return;
+        const labels = { performance: 'Perf.', yield: 'Yield', market: 'Market', energy: 'Energy' };
+        c.innerHTML = Object.entries(labels).map(([key, lbl]) => {
+            const val = scores[key];
+            const cls = scoreClass(val);
+            const display = val === null ? '—' : val;
+            const width = val === null ? 0 : val;
+            return `<div class="score-pill ${cls}"><span class="score-label">${lbl}</span><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill" style="width:${width}%"></div></div><span class="score-value">${display}</span></div></div>`;
+        }).join('');
+    }
 
     function loadConfig() {
         try {
             const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-            PERSIST_FIELDS.forEach(key => { if (els[key]) els[key].value = data[key] || DEFAULTS[key] || ''; });
-            if (data.isOnboarded !== undefined) els.isOnboarded.checked = data.isOnboarded;
+            GENERAL_FIELDS.forEach(k => { const e = $(k); if (e) e.value = data[k] || DEFAULTS[k] || ''; });
+            ['p1','p2'].forEach(p => PROP_FIELDS.forEach(f => { const id = `${p}_${f}`; const e = $(id); if (e) e.value = data[id] !== undefined ? data[id] : (DEFAULTS[id] || ''); }));
+            if (data.isOnboarded !== undefined) $('isOnboarded').checked = data.isOnboarded;
         } catch (_) {}
     }
 
     function saveConfigData() {
-        const data = { isOnboarded: els.isOnboarded.checked };
-        PERSIST_FIELDS.forEach(key => { if (els[key]) data[key] = els[key].value; });
+        const data = { isOnboarded: $('isOnboarded').checked };
+        GENERAL_FIELDS.forEach(k => { const e = $(k); if (e) data[k] = e.value; });
+        ['p1','p2'].forEach(p => PROP_FIELDS.forEach(f => { const id = `${p}_${f}`; const e = $(id); if (e) data[id] = e.value; }));
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         showToast('Configuration saved');
     }
 
     function clearConfigData() {
         localStorage.removeItem(STORAGE_KEY);
-        PERSIST_FIELDS.forEach(key => { if (els[key]) els[key].value = DEFAULTS[key] || ''; });
-        els.isOnboarded.checked = DEFAULTS.isOnboarded;
+        GENERAL_FIELDS.forEach(k => { const e = $(k); if (e) e.value = DEFAULTS[k] || ''; });
+        ['p1','p2'].forEach(p => PROP_FIELDS.forEach(f => { const id = `${p}_${f}`; const e = $(id); if (e) e.value = DEFAULTS[id] || ''; }));
+        $('isOnboarded').checked = DEFAULTS.isOnboarded;
         updateDashboardMode();
         showToast('Defaults restored');
     }
 
-    function showToast(msg) { els.toast.textContent = msg; els.toast.classList.add('show'); setTimeout(() => els.toast.classList.remove('show'), 2500); }
+    function showToast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500); }
 
     let logEntries = [];
     function log(msg, level = 'info') {
         const time = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
         logEntries.push({ time, msg, level });
-        if (logEntries.length === 1) els.logContainer.innerHTML = '';
+        const lc = $('logContainer');
+        if (logEntries.length === 1) lc.innerHTML = '';
         const entry = document.createElement('div'); entry.className = 'log-entry';
         entry.innerHTML = `<span class="log-time">${time}</span><span class="log-msg ${level}">${msg}</span>`;
-        els.logContainer.appendChild(entry); els.logContainer.scrollTop = els.logContainer.scrollHeight;
+        lc.appendChild(entry); lc.scrollTop = lc.scrollHeight;
     }
 
     function openWidget() {
@@ -718,30 +780,48 @@
         if (!widget) return;
         const agentId = getAgentId();
         if (widget.getAttribute('agent-id') !== agentId) widget.setAttribute('agent-id', agentId);
+        const props = buildPropertiesArray();
         const vars = {
-            brand_name: els.brand_name.value || DEFAULTS.brand_name,
-            name: `${els.firstName.value || DEFAULTS.firstName} ${els.lastName.value || DEFAULTS.lastName}`.trim(),
-            advisor_name: els.advisor_name.value || DEFAULTS.advisor_name,
-            isOnboarded: String(els.isOnboarded.checked),
-            property_address: els.property_address.value || DEFAULTS.property_address,
-            estimated_value: els.estimated_value.value || DEFAULTS.estimated_value,
-            value_change_percent: els.value_change_percent.value || DEFAULTS.value_change_percent,
-            language_spoken: els.language_spoken.value || 'en',
+            brand_name: v('brand_name', DEFAULTS.brand_name),
+            name: `${v('firstName', DEFAULTS.firstName)} ${v('lastName', DEFAULTS.lastName)}`.trim(),
+            advisor_name: v('advisor_name', DEFAULTS.advisor_name),
+            isOnboarded: String($('isOnboarded').checked),
+            properties: JSON.stringify(props),
+            language_spoken: v('language_spoken', 'en'),
         };
         widget.setAttribute('dynamic-variables', JSON.stringify(vars));
     }
 
-    const PROPERTY_1_VALUE = 1850000, PROPERTY_2_VALUE = 920000;
-    const TOTAL_RE = PROPERTY_1_VALUE + PROPERTY_2_VALUE;
+    function updatePropertyCards(props, onboarded) {
+        const cards = [
+            { prefix: 'prop1', idx: 0, scoresId: 'prop1Scores' },
+            { prefix: 'prop2', idx: 1, scoresId: 'prop2Scores' },
+        ];
+        cards.forEach(({ prefix, idx, scoresId }) => {
+            const p = props[idx];
+            if (!p) return;
+            const addrParts = p.address.split(',').map(s => s.trim());
+            $(prefix + 'Address').textContent = addrParts[0] || p.address;
+            $(prefix + 'City').textContent = addrParts.slice(1).join(', ') || '';
+            $(prefix + 'Value').textContent = p.estimated_value;
+            $(prefix + 'Change').textContent = `▲ ${p.value_change_percent}`;
+            if (onboarded) renderScores(scoresId, p.scores);
+            else $(scoresId).innerHTML = '';
+        });
+    }
+
+    function fmt(n) { return 'CHF ' + n.toLocaleString('en-CH'); }
+    function parseCHF(str) { return parseInt(String(str).replace(/[^0-9]/g, ''), 10) || 0; }
 
     function updateDashboardMode() {
-        const onboarded = els.isOnboarded.checked;
-        const firstName = els.firstName.value || DEFAULTS.firstName;
-        const lastName = els.lastName.value || DEFAULTS.lastName;
-        const advisorName = els.advisor_name.value || DEFAULTS.advisor_name;
+        const onboarded = $('isOnboarded').checked;
+        const firstName = v('firstName', DEFAULTS.firstName);
+        const lastName = v('lastName', DEFAULTS.lastName);
+        const advisorName = v('advisor_name', DEFAULTS.advisor_name);
+        const props = buildPropertiesArray();
 
-        els.toggleStatusLabel.textContent = onboarded ? 'Advisory Mode' : 'Onboarding Mode';
-        els.toggleStatusLabel.className = 'toggle-status ' + (onboarded ? 'onboarded' : 'not-onboarded');
+        $('toggleStatusLabel').textContent = onboarded ? 'Advisory Mode' : 'Onboarding Mode';
+        $('toggleStatusLabel').className = 'toggle-status ' + (onboarded ? 'onboarded' : 'not-onboarded');
 
         $('welcomeName').textContent = `Welcome, ${firstName}`;
         $('clientDisplay').textContent = `${firstName} ${lastName}`;
@@ -750,11 +830,13 @@
         $('sidebarName').textContent = `${firstName} ${lastName}`;
         $('sidebarAvatar').textContent = `${firstName[0] || ''}${lastName[0] || ''}`.toUpperCase();
 
-        els.signalBanner.classList.toggle('visible', onboarded);
+        $('signalBanner').classList.toggle('visible', onboarded);
         document.querySelectorAll('.property-card').forEach(c => c.classList.toggle('highlighted', onboarded));
 
         $('onboardingCta').style.display = onboarded ? 'none' : 'flex';
         $('advisoryCta').style.display = onboarded ? 'flex' : 'none';
+
+        updatePropertyCards(props, onboarded);
 
         if (!onboarded) {
             $('rePropertiesCount').textContent = 'Not Yet Monitored';
@@ -763,24 +845,24 @@
             $('rentalIncome').textContent = '\u2014';
             $('rentalIncomeDetail').textContent = 'No monitored investment properties';
         } else {
-            $('rePropertiesCount').textContent = '2 Properties Monitored';
+            $('rePropertiesCount').textContent = props.length + ' Properties Monitored';
             $('rePropertiesCount').className = 'card-badge badge-green';
             document.querySelectorAll('.property-card').forEach(c => { c.style.opacity = '1'; c.style.filter = 'none'; c.style.pointerEvents = 'auto'; });
             $('rentalIncome').textContent = 'CHF 42,000';
-            $('rentalIncomeDetail').textContent = 'Seestrasse 15 \u2014 Investment property';
+            $('rentalIncomeDetail').textContent = (props[1] ? props[1].address.split(',')[0] : 'Investment property') + ' \u2014 Investment property';
         }
 
-        if (onboarded) $('advisoryCtaText').textContent = `Your property portfolio is showing strong performance (${els.value_change_percent.value || '+8.2%'}). Our real estate specialist can explain what this means for your overall asset allocation and financial goals.`;
+        const leadChange = props[0] ? props[0].value_change_percent : '+8.2%';
+        if (onboarded) $('advisoryCtaText').textContent = `Your property portfolio is showing strong performance (${leadChange}). Our real estate specialist can explain what this means for your overall asset allocation and financial goals.`;
 
-        updateDonutChart(onboarded);
+        const totalRE = props.reduce((s, p) => s + parseCHF(p.estimated_value), 0);
+        updateDonutChart(onboarded, totalRE);
         updateWidgetVars();
     }
 
-    function fmt(n) { return 'CHF ' + n.toLocaleString('en-CH'); }
-
-    function updateDonutChart(onboarded) {
+    function updateDonutChart(onboarded, reValue) {
         const equities = 3400000, cash = 1275000, others = 1055000;
-        const re = onboarded ? TOTAL_RE : 2200000;
+        const re = onboarded ? reValue : 2200000;
         const total = equities + re + cash + others;
         const pE = Math.round(equities/total*100), pR = Math.round(re/total*100), pC = Math.round(cash/total*100), pO = 100-pE-pR-pC;
         const colors = ['#60a5fa','#2dd4bf','#94a3b8','#a78bfa'], vals = [pE,pR,pC,pO];
@@ -801,33 +883,45 @@
         else{$('allocationBadge').textContent='Balanced';$('allocationBadge').className='card-badge badge-blue';}
     }
 
-    function v(el,fb){return(el&&el.value)||fb||'';}
-
-    async function fireWebhook(url,payload){
-        const j=JSON.stringify(payload);
-        try{const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:j});let b=null;try{b=await r.json();}catch(_){}return{status:r.status,body:b,ok:r.ok,mode:'cors'};}
-        catch(_){try{const r=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},body:j});let b=null;try{b=await r.json();}catch(_){}return{status:r.status,body:b,ok:r.ok,mode:'text-plain'};}catch(_){return{status:0,body:null,ok:true,mode:'opaque'};}}
+    async function fireWebhook(url, payload) {
+        const j = JSON.stringify(payload);
+        try { const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: j }); let b = null; try { b = await r.json(); } catch(_) {} return { status: r.status, body: b, ok: r.ok, mode: 'cors' }; }
+        catch(_) { try { const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: j }); let b = null; try { b = await r.json(); } catch(_) {} return { status: r.status, body: b, ok: r.ok, mode: 'text-plain' }; } catch(_) { return { status: 0, body: null, ok: true, mode: 'opaque' }; } }
     }
 
-    async function triggerOutboundCall(){
-        const wh=els.webhookUrl.value; if(!wh){log('No webhook URL configured','err');showToast('Configure webhook URL first');return;}
-        els.triggerCall.disabled=true;
-        const fn=v(els.firstName,DEFAULTS.firstName),ln=v(els.lastName,DEFAULTS.lastName),mode=els.isOnboarded.checked?'ADVISORY':'ONBOARDING';
-        log(`Triggering ${mode} outbound call for ${fn} ${ln}...`,'warn');
-        const payload={signal_type:els.isOnboarded.checked?'valuation_increase':'onboarding_outreach',mode,isOnboarded:String(els.isOnboarded.checked),firstName:fn,lastName:ln,name:`${fn} ${ln}`.trim(),phone_number:v(els.phone_number,DEFAULTS.phone_number),email:v(els.email,DEFAULTS.email),property_address:v(els.property_address,DEFAULTS.property_address),estimated_value:v(els.estimated_value,DEFAULTS.estimated_value),value_change_percent:v(els.value_change_percent,DEFAULTS.value_change_percent),brand_name:v(els.brand_name,DEFAULTS.brand_name),advisor_name:v(els.advisor_name,DEFAULTS.advisor_name),agent_id:getAgentId(),language_spoken:v(els.language_spoken,DEFAULTS.language_spoken)};
-        try{const res=await fireWebhook(wh,payload);log(`Webhook: HTTP ${res.status} (${res.mode})`,res.ok?'ok':'err');}catch(e){log(`Webhook failed: ${e.message}`,'err');}
-        log(`${mode} outbound call triggered`,'ok'); els.triggerCall.disabled=false;
+    async function triggerOutboundCall() {
+        const wh = v('webhookUrl');
+        if (!wh) { log('No webhook URL configured', 'err'); showToast('Configure webhook URL first'); return; }
+        $('triggerCall').disabled = true;
+        const fn = v('firstName', DEFAULTS.firstName), ln = v('lastName', DEFAULTS.lastName);
+        const mode = $('isOnboarded').checked ? 'ADVISORY' : 'ONBOARDING';
+        const props = buildPropertiesArray();
+        log(`Triggering ${mode} outbound call for ${fn} ${ln}...`, 'warn');
+        const payload = {
+            signal_type: $('isOnboarded').checked ? 'valuation_increase' : 'onboarding_outreach',
+            mode, isOnboarded: String($('isOnboarded').checked),
+            firstName: fn, lastName: ln, name: `${fn} ${ln}`.trim(),
+            phone_number: v('phone_number', DEFAULTS.phone_number),
+            email: v('email', DEFAULTS.email),
+            properties: props,
+            brand_name: v('brand_name', DEFAULTS.brand_name),
+            advisor_name: v('advisor_name', DEFAULTS.advisor_name),
+            agent_id: getAgentId(),
+            language_spoken: v('language_spoken', DEFAULTS.language_spoken),
+        };
+        try { const res = await fireWebhook(wh, payload); log(`Webhook: HTTP ${res.status} (${res.mode})`, res.ok ? 'ok' : 'err'); } catch(e) { log(`Webhook failed: ${e.message}`, 'err'); }
+        log(`${mode} outbound call triggered`, 'ok'); $('triggerCall').disabled = false;
     }
 
-    els.isOnboarded.addEventListener('change',updateDashboardMode);
-    els.triggerCall.addEventListener('click',triggerOutboundCall);
-    els.saveConfig.addEventListener('click',saveConfigData);
-    els.clearConfig.addEventListener('click',clearConfigData);
-    els.demoToggle.addEventListener('click',()=>{const o=els.demoBody.classList.toggle('open');els.demoToggle.classList.toggle('open',o);});
-    [...document.querySelectorAll('.demo-field input, .demo-field select')].forEach(el=>{el.addEventListener('change',()=>{updateDashboardMode();});});
+    $('isOnboarded').addEventListener('change', updateDashboardMode);
+    $('triggerCall').addEventListener('click', triggerOutboundCall);
+    $('saveConfig').addEventListener('click', saveConfigData);
+    $('clearConfig').addEventListener('click', clearConfigData);
+    $('demoToggle').addEventListener('click', () => { const o = $('demoBody').classList.toggle('open'); $('demoToggle').classList.toggle('open', o); });
+    [...document.querySelectorAll('.demo-field input, .demo-field select')].forEach(el => { el.addEventListener('change', () => { updateDashboardMode(); }); });
 
-    $('dateDisplay').textContent=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
-    loadConfig(); updateDashboardMode(); log('Wealth dashboard ready — widget active','ok');
+    $('dateDisplay').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    loadConfig(); updateDashboardMode(); log('Wealth dashboard v3 ready — per-property scores active', 'ok');
 </script>
 </body>
 </html>
