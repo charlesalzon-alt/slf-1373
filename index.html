@@ -18,16 +18,13 @@
             --surface-alt: rgba(255,255,255,0.05);
             --border: rgba(255,255,255,0.08);
             --border-hover: rgba(255,255,255,0.14);
-
             --gold: #f4be7e;
             --gold-dark: #d4983e;
             --gold-dim: rgba(244,190,126,0.12);
             --gold-glow: rgba(244,190,126,0.15);
-
             --text-primary: #f1f5f9;
             --text-secondary: #94a3b8;
             --text-muted: #64748b;
-
             --blue: #60a5fa;
             --blue-dim: rgba(96,165,250,0.12);
             --teal: #2dd4bf;
@@ -41,10 +38,10 @@
             --purple: #a78bfa;
             --purple-dim: rgba(167,139,250,0.12);
             --slate: #94a3b8;
-
             --radius-lg: 16px;
             --radius-md: 12px;
             --radius-sm: 8px;
+            --sidebar-w: 240px;
         }
 
         body {
@@ -56,19 +53,87 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* ─── Layout ─── */
+        .app-layout { display: flex; min-height: 100vh; }
+
+        /* ─── Sidebar ─── */
+        .sidebar {
+            width: var(--sidebar-w); flex-shrink: 0;
+            background: var(--bg-elevated);
+            border-right: 1px solid var(--border);
+            display: flex; flex-direction: column;
+            position: fixed; top: 0; left: 0; bottom: 0;
+            z-index: 100;
+            transition: transform 0.25s ease;
+        }
+
+        .sidebar-brand {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 1.25rem; font-weight: 700; color: #fff; letter-spacing: -0.02em;
+        }
+        .sidebar-brand span { color: var(--gold); }
+
+        .sidebar-nav { flex: 1; overflow-y: auto; padding: 0.75rem 0; }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 0.75rem;
+            padding: 0.625rem 1.5rem;
+            color: var(--text-muted); font-size: 0.8125rem; font-weight: 500;
+            text-decoration: none; cursor: pointer;
+            transition: all 0.15s; border: none; background: none;
+            font-family: inherit; width: 100%; text-align: left;
+        }
+        .nav-item:hover { color: var(--text-secondary); background: var(--surface); }
+        .nav-item.active { color: var(--gold); background: var(--gold-dim); }
+        .nav-item.active .nav-icon { color: var(--gold); }
+
+        .nav-icon { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.7; }
+        .nav-item.active .nav-icon { opacity: 1; }
+        .nav-item:hover .nav-icon { opacity: 0.9; }
+
+        .nav-divider { height: 1px; background: var(--border); margin: 0.5rem 1.5rem; }
+
+        .sidebar-footer {
+            padding: 1rem 1.5rem; border-top: 1px solid var(--border);
+            display: flex; align-items: center; gap: 0.625rem;
+        }
+        .sidebar-footer-avatar {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: var(--gold-dim); border: 1px solid rgba(244,190,126,0.2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.6875rem; font-weight: 600; color: var(--gold);
+        }
+        .sidebar-footer-info { flex: 1; min-width: 0; }
+        .sidebar-footer-name { font-size: 0.8125rem; font-weight: 600; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .sidebar-footer-role { font-size: 0.6875rem; color: var(--text-muted); }
+
+        /* ─── Main area ─── */
+        .main-area { flex: 1; margin-left: var(--sidebar-w); min-width: 0; }
+
         /* ─── Header ─── */
         .header {
             background: var(--bg-elevated);
             border-bottom: 1px solid var(--border);
             padding: 0 2rem;
-            height: 64px;
+            height: 56px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            position: sticky; top: 0; z-index: 50;
         }
 
-        .header-brand { font-size: 1.25rem; font-weight: 700; color: #fff; letter-spacing: -0.02em; }
-        .header-brand span { color: var(--gold); }
+        .header-left { display: flex; align-items: center; gap: 0.75rem; }
+
+        .burger {
+            display: none; width: 36px; height: 36px; border: none; background: none;
+            cursor: pointer; padding: 0.375rem; border-radius: var(--radius-sm);
+            color: var(--text-secondary); transition: background 0.15s;
+        }
+        .burger:hover { background: var(--surface); }
+        .burger svg { width: 100%; height: 100%; }
+
+        .header-page-title { font-size: 0.875rem; font-weight: 600; color: var(--text-secondary); }
 
         .header-right { display: flex; align-items: center; gap: 1.5rem; }
         .header-advisor { display: flex; align-items: center; gap: 0.625rem; color: var(--text-muted); font-size: 0.8125rem; }
@@ -89,60 +154,26 @@
         .welcome-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
         .welcome-bar h1 { font-size: 1.625rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; }
         .welcome-bar p { font-size: 0.875rem; color: var(--text-muted); margin-top: 0.25rem; }
-
-        .date-badge {
-            font-size: 0.8125rem; color: var(--text-muted);
-            background: var(--surface); backdrop-filter: blur(12px);
-            padding: 0.375rem 0.875rem; border-radius: 20px; border: 1px solid var(--border);
-        }
+        .date-badge { font-size: 0.8125rem; color: var(--text-muted); background: var(--surface); backdrop-filter: blur(12px); padding: 0.375rem 0.875rem; border-radius: 20px; border: 1px solid var(--border); }
 
         /* ─── Signal Banner ─── */
-        .signal-banner {
-            background: var(--surface);
-            border: 1px solid rgba(244,190,126,0.2);
-            border-radius: var(--radius-md); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem;
-            display: none; align-items: center; gap: 1rem; color: var(--text-primary);
-            backdrop-filter: blur(16px);
-            box-shadow: 0 0 40px -10px var(--gold-glow);
-        }
+        .signal-banner { background: var(--surface); border: 1px solid rgba(244,190,126,0.2); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; display: none; align-items: center; gap: 1rem; color: var(--text-primary); backdrop-filter: blur(16px); box-shadow: 0 0 40px -10px var(--gold-glow); }
         .signal-banner.visible { display: flex; }
-
-        .signal-banner-icon {
-            width: 44px; height: 44px; border-radius: 12px;
-            background: var(--gold-dim); border: 1px solid rgba(244,190,126,0.15);
-            display: flex; align-items: center; justify-content: center; font-size: 1.375rem; flex-shrink: 0;
-        }
-
+        .signal-banner-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--gold-dim); border: 1px solid rgba(244,190,126,0.15); display: flex; align-items: center; justify-content: center; font-size: 1.375rem; flex-shrink: 0; }
         .signal-banner-text { flex: 1; }
         .signal-banner-text h3 { font-size: 0.9375rem; font-weight: 600; color: var(--gold); }
         .signal-banner-text p { font-size: 0.8125rem; color: var(--text-secondary); margin-top: 0.125rem; }
-
-        .signal-banner-action {
-            padding: 0.5rem 1.25rem;
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color: #1a1207; border: none;
-            border-radius: var(--radius-sm); font-family: inherit; font-size: 0.8125rem;
-            font-weight: 600; cursor: pointer; white-space: nowrap;
-            transition: all 0.2s;
-        }
+        .signal-banner-action { padding: 0.5rem 1.25rem; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #1a1207; border: none; border-radius: var(--radius-sm); font-family: inherit; font-size: 0.8125rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
         .signal-banner-action:hover { filter: brightness(1.1); transform: translateY(-1px); }
 
         /* ─── Grid ─── */
         .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
 
         /* ─── Cards ─── */
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg); padding: 1.5rem;
-            backdrop-filter: blur(16px);
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; backdrop-filter: blur(16px); transition: border-color 0.2s, box-shadow 0.2s; }
         .card:hover { border-color: var(--border-hover); }
-
         .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
         .card-title { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
-
         .card-badge { font-size: 0.6875rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 12px; }
         .badge-green { background: var(--green-dim); color: var(--green); }
         .badge-blue { background: var(--blue-dim); color: var(--blue); }
@@ -152,16 +183,8 @@
         .portfolio-value { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.03em; color: #fff; }
         .portfolio-change { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.875rem; font-weight: 600; margin-top: 0.5rem; }
         .portfolio-change.positive { color: var(--green); }
-
         .portfolio-breakdown { margin-top: 1.25rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.625rem; }
-
-        .breakdown-item {
-            display: flex; align-items: center; gap: 0.5rem;
-            padding: 0.625rem 0.75rem;
-            background: var(--surface-alt); border-radius: var(--radius-sm);
-            border: 1px solid transparent;
-            transition: border-color 0.15s;
-        }
+        .breakdown-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem 0.75rem; background: var(--surface-alt); border-radius: var(--radius-sm); border: 1px solid transparent; transition: border-color 0.15s; }
         .breakdown-item:hover { border-color: var(--border); }
         .breakdown-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
         .breakdown-label { font-size: 0.75rem; color: var(--text-muted); flex: 1; }
@@ -173,7 +196,6 @@
         .donut-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
         .donut-center-label { font-size: 0.6875rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
         .donut-center-value { font-size: 1.375rem; font-weight: 800; color: #fff; }
-
         .donut-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 1.25rem; }
         .legend-item { display: flex; align-items: center; gap: 0.375rem; font-size: 0.75rem; color: var(--text-secondary); }
         .legend-item strong { color: var(--text-primary); }
@@ -184,173 +206,79 @@
         .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
         .section-title { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
         .properties-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-
-        .property-card {
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: var(--radius-md); padding: 1.25rem;
-            position: relative; overflow: hidden;
-            backdrop-filter: blur(16px);
-            transition: all 0.25s;
-        }
+        .property-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem; position: relative; overflow: hidden; backdrop-filter: blur(16px); transition: all 0.25s; }
         .property-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
-
-        .property-card.highlighted {
-            border-color: rgba(45,212,191,0.3);
-            box-shadow: 0 0 30px -8px rgba(45,212,191,0.12);
-        }
-        .property-card.highlighted::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-            background: linear-gradient(90deg, var(--teal), transparent);
-        }
-
+        .property-card.highlighted { border-color: rgba(45,212,191,0.3); box-shadow: 0 0 30px -8px rgba(45,212,191,0.12); }
+        .property-card.highlighted::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--teal), transparent); }
         .property-type { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 0.5rem; }
         .property-address { font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.125rem; }
         .property-city { font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 1rem; }
-
         .property-stats { display: flex; justify-content: space-between; align-items: flex-end; }
         .property-value-label { font-size: 0.6875rem; color: var(--text-muted); margin-bottom: 0.125rem; }
         .property-value-amount { font-size: 1.25rem; font-weight: 700; color: #fff; }
-
-        .property-change {
-            display: flex; align-items: center; gap: 0.25rem; font-size: 0.8125rem; font-weight: 600;
-            padding: 0.25rem 0.625rem; border-radius: 12px;
-        }
+        .property-change { display: flex; align-items: center; gap: 0.25rem; font-size: 0.8125rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 12px; }
         .property-change.positive { color: var(--green); background: var(--green-dim); }
-
-        .property-signal {
-            display: none; align-items: center; gap: 0.375rem; margin-top: 0.75rem;
-            padding: 0.5rem 0.75rem; background: var(--teal-dim); border: 1px solid rgba(45,212,191,0.1);
-            border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 500; color: var(--teal);
-        }
+        .property-signal { display: none; align-items: center; gap: 0.375rem; margin-top: 0.75rem; padding: 0.5rem 0.75rem; background: var(--teal-dim); border: 1px solid rgba(45,212,191,0.1); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 500; color: var(--teal); }
         .property-card.highlighted .property-signal { display: flex; }
 
         /* ─── Revenue ─── */
         .revenue-section { margin-bottom: 1.5rem; }
-        .revenue-card {
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: var(--radius-lg); padding: 1.5rem;
-            backdrop-filter: blur(16px);
-        }
+        .revenue-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; backdrop-filter: blur(16px); }
         .revenue-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-top: 1rem; }
-        .revenue-item {
-            padding: 0.875rem; background: var(--surface-alt);
-            border-radius: var(--radius-sm); border: 1px solid transparent;
-            transition: border-color 0.15s;
-        }
+        .revenue-item { padding: 0.875rem; background: var(--surface-alt); border-radius: var(--radius-sm); border: 1px solid transparent; transition: border-color 0.15s; }
         .revenue-item:hover { border-color: var(--border); }
         .revenue-item-label { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 0.375rem; }
         .revenue-item-value { font-size: 1.125rem; font-weight: 700; color: var(--text-primary); }
         .revenue-item-detail { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; }
 
         /* ─── CTA ─── */
-        .cta-section {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg); padding: 2rem; display: flex; align-items: center;
-            gap: 2rem; margin-bottom: 1.5rem;
-            backdrop-filter: blur(16px);
-            transition: border-color 0.2s;
-        }
+        .cta-section { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; display: flex; align-items: center; gap: 2rem; margin-bottom: 1.5rem; backdrop-filter: blur(16px); transition: border-color 0.2s; }
         .cta-section:hover { border-color: var(--border-hover); }
         .cta-content { flex: 1; }
         .cta-content h2 { font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
         .cta-content p { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6; max-width: 520px; }
-
-        .cta-button {
-            padding: 0.875rem 2rem;
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color: #1a1207; border: none;
-            border-radius: var(--radius-sm); font-family: inherit; font-size: 0.9375rem;
-            font-weight: 600; cursor: pointer; white-space: nowrap;
-            transition: all 0.2s;
-            box-shadow: 0 4px 20px -4px rgba(244,190,126,0.3);
-        }
+        .cta-button { padding: 0.875rem 2rem; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #1a1207; border: none; border-radius: var(--radius-sm); font-family: inherit; font-size: 0.9375rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s; box-shadow: 0 4px 20px -4px rgba(244,190,126,0.3); }
         .cta-button:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 8px 30px -4px rgba(244,190,126,0.4); }
 
         /* ─── Demo Controls ─── */
-        .demo-controls {
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: var(--radius-lg); margin-bottom: 1.5rem; overflow: hidden;
-            backdrop-filter: blur(16px);
-        }
-
-        .demo-toggle {
-            display: flex; align-items: center; gap: 0.5rem; padding: 1rem 1.5rem; cursor: pointer;
-            font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); border: none;
-            background: none; font-family: inherit; width: 100%; text-align: left; transition: color 0.15s;
-        }
+        .demo-controls { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 1.5rem; overflow: hidden; backdrop-filter: blur(16px); }
+        .demo-toggle { display: flex; align-items: center; gap: 0.5rem; padding: 1rem 1.5rem; cursor: pointer; font-size: 0.8125rem; font-weight: 600; color: var(--text-muted); border: none; background: none; font-family: inherit; width: 100%; text-align: left; transition: color 0.15s; }
         .demo-toggle:hover { color: var(--text-secondary); }
         .demo-toggle .chevron { transition: transform 0.2s; font-size: 0.625rem; }
         .demo-toggle.open .chevron { transform: rotate(90deg); }
-
         .demo-body { display: none; padding: 0 1.5rem 1.5rem; }
         .demo-body.open { display: block; }
-
         .demo-section-title { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.75rem; margin-top: 1rem; }
         .demo-section-title:first-child { margin-top: 0; }
-
         .demo-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; }
         .demo-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-
         .demo-field label { display: block; font-size: 0.6875rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 0.375rem; }
         .demo-field label .var-hint { font-family: 'JetBrains Mono', 'SF Mono', monospace; font-size: 0.5625rem; color: var(--text-muted); font-weight: 400; }
-
-        .demo-field input, .demo-field select {
-            width: 100%; padding: 0.5rem 0.75rem;
-            background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-            border-radius: var(--radius-sm); color: var(--text-primary);
-            font-size: 0.8125rem; font-family: inherit; transition: border-color 0.15s;
-        }
+        .demo-field input, .demo-field select { width: 100%; padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.8125rem; font-family: inherit; transition: border-color 0.15s; }
         .demo-field input:focus, .demo-field select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 2px rgba(244,190,126,0.1); }
         .demo-field input::placeholder { color: var(--text-muted); }
         .demo-field select option { background: var(--bg-elevated); color: var(--text-primary); }
-
         .toggle-row { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0; }
         .toggle-label { font-size: 0.8125rem; font-weight: 500; color: var(--text-primary); }
-
         .toggle-switch { position: relative; width: 48px; height: 26px; cursor: pointer; }
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
         .toggle-slider { position: absolute; inset: 0; background: rgba(255,255,255,0.1); border-radius: 13px; transition: background 0.2s; }
-        .toggle-slider::before {
-            content: ''; position: absolute; width: 20px; height: 20px; left: 3px; top: 3px;
-            background: var(--text-secondary); border-radius: 50%; transition: all 0.2s;
-        }
+        .toggle-slider::before { content: ''; position: absolute; width: 20px; height: 20px; left: 3px; top: 3px; background: var(--text-secondary); border-radius: 50%; transition: all 0.2s; }
         .toggle-switch input:checked + .toggle-slider { background: var(--gold-dim); }
         .toggle-switch input:checked + .toggle-slider::before { transform: translateX(22px); background: var(--gold); }
-
         .toggle-status { font-size: 0.75rem; font-weight: 600; padding: 0.25rem 0.625rem; border-radius: 12px; }
         .toggle-status.onboarded { background: var(--gold-dim); color: var(--gold); }
         .toggle-status.not-onboarded { background: var(--amber-dim); color: var(--amber); }
-
         .demo-actions { display: flex; gap: 0.625rem; margin-top: 1.25rem; }
-
-        .btn-trigger {
-            padding: 0.625rem 1.5rem;
-            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-            color: #1a1207; border: none;
-            border-radius: var(--radius-sm); font-family: inherit; font-size: 0.8125rem;
-            font-weight: 600; cursor: pointer; transition: all 0.15s;
-        }
+        .btn-trigger { padding: 0.625rem 1.5rem; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #1a1207; border: none; border-radius: var(--radius-sm); font-family: inherit; font-size: 0.8125rem; font-weight: 600; cursor: pointer; transition: all 0.15s; }
         .btn-trigger:hover { filter: brightness(1.1); }
         .btn-trigger:disabled { opacity: 0.4; cursor: not-allowed; filter: none; }
-
-        .btn-secondary {
-            padding: 0.625rem 1.25rem; background: transparent; color: var(--text-secondary);
-            border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: inherit;
-            font-size: 0.8125rem; font-weight: 500; cursor: pointer; transition: all 0.15s;
-        }
+        .btn-secondary { padding: 0.625rem 1.25rem; background: transparent; color: var(--text-secondary); border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.8125rem; font-weight: 500; cursor: pointer; transition: all 0.15s; }
         .btn-secondary:hover { background: var(--surface-alt); border-color: var(--border-hover); }
-
-        .demo-log {
-            margin-top: 1rem; max-height: 160px; overflow-y: auto;
-            font-family: 'JetBrains Mono', 'SF Mono', monospace; font-size: 0.6875rem; line-height: 1.7;
-            background: rgba(0,0,0,0.3); border-radius: var(--radius-sm); padding: 0.75rem;
-            border: 1px solid var(--border);
-        }
+        .demo-log { margin-top: 1rem; max-height: 160px; overflow-y: auto; font-family: 'JetBrains Mono', 'SF Mono', monospace; font-size: 0.6875rem; line-height: 1.7; background: rgba(0,0,0,0.3); border-radius: var(--radius-sm); padding: 0.75rem; border: 1px solid var(--border); }
         .demo-log::-webkit-scrollbar { width: 4px; }
         .demo-log::-webkit-scrollbar-track { background: transparent; }
         .demo-log::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
-
         .log-entry { display: flex; gap: 0.625rem; padding: 0.125rem 0; }
         .log-time { color: var(--text-muted); flex-shrink: 0; }
         .log-msg { flex: 1; }
@@ -360,21 +288,25 @@
         .log-msg.info { color: var(--text-muted); }
         .log-empty { color: var(--text-muted); font-style: italic; }
 
-        /* ─── Toast ─── */
-        .toast {
-            position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(10px);
-            padding: 0.625rem 1.25rem;
-            background: rgba(255,255,255,0.95); color: var(--bg);
-            font-size: 0.8125rem; font-weight: 600; border-radius: var(--radius-sm);
-            opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 200;
-        }
+        .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(10px); padding: 0.625rem 1.25rem; background: rgba(255,255,255,0.95); color: var(--bg); font-size: 0.8125rem; font-weight: 600; border-radius: var(--radius-sm); opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 200; }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        /* ─── Widget ─── */
         elevenlabs-convai { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 50; }
 
+        /* ─── Overlay (mobile sidebar) ─── */
+        .sidebar-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.6); z-index: 99;
+            backdrop-filter: blur(4px);
+        }
+        .sidebar-overlay.visible { display: block; }
+
         /* ─── Responsive ─── */
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-area { margin-left: 0; }
+            .burger { display: flex; align-items: center; justify-content: center; }
             .dashboard-grid, .properties-grid, .demo-row, .demo-row-2, .revenue-grid { grid-template-columns: 1fr; }
             .cta-section { flex-direction: column; text-align: center; }
             .header { padding: 0 1rem; }
@@ -385,633 +317,462 @@
 </head>
 <body>
 
-    <div class="header">
-        <div class="header-brand">your<span>_brand</span></div>
-        <div class="header-right">
-            <div class="header-advisor">
-                <div class="advisor-avatar" id="advisorAvatar">MW</div>
-                <span>Advisor: <strong id="advisorDisplay" style="color:var(--text-primary)">Dr. Martin Weber</strong></span>
-            </div>
-            <div class="header-client" id="clientDisplay">Thomas Keller</div>
-        </div>
-    </div>
+<div class="app-layout">
 
-    <div class="container">
-
-        <div class="welcome-bar">
-            <div>
-                <h1 id="welcomeName">Welcome, Thomas</h1>
-                <p>Your complete wealth overview</p>
-            </div>
-            <div class="date-badge" id="dateDisplay">March 30, 2026</div>
-        </div>
-
-        <!-- Signal banner (advisory mode only) -->
-        <div class="signal-banner" id="signalBanner">
-            <div class="signal-banner-icon">📈</div>
-            <div class="signal-banner-text">
-                <h3>Real Estate Performance Alert</h3>
-                <p id="signalBannerText">Your property portfolio has appreciated — this may impact your asset allocation.</p>
-            </div>
-            <button class="signal-banner-action" onclick="openWidget()">Review with Specialist</button>
-        </div>
-
-        <!-- Main grid: Portfolio + Donut -->
-        <div class="dashboard-grid">
-
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-title">Portfolio Summary</span>
-                    <span class="card-badge badge-green">+2.3% YTD</span>
-                </div>
-                <div class="portfolio-value" id="totalPortfolioValue">CHF 8,500,000</div>
-                <div class="portfolio-change positive">
-                    <span>▲</span>
-                    <span id="quarterChange">+CHF 192,000 this quarter</span>
-                </div>
-                <div class="portfolio-breakdown">
-                    <div class="breakdown-item">
-                        <div class="breakdown-dot" style="background:#60a5fa"></div>
-                        <span class="breakdown-label">Equities</span>
-                        <span class="breakdown-value" id="equitiesValue">CHF 3,400,000</span>
-                    </div>
-                    <div class="breakdown-item">
-                        <div class="breakdown-dot" style="background:#2dd4bf"></div>
-                        <span class="breakdown-label">Real Estate</span>
-                        <span class="breakdown-value" id="realEstateValue">CHF 2,770,000</span>
-                    </div>
-                    <div class="breakdown-item">
-                        <div class="breakdown-dot" style="background:#94a3b8"></div>
-                        <span class="breakdown-label">Cash</span>
-                        <span class="breakdown-value" id="cashValue">CHF 1,275,000</span>
-                    </div>
-                    <div class="breakdown-item">
-                        <div class="breakdown-dot" style="background:#a78bfa"></div>
-                        <span class="breakdown-label">Others</span>
-                        <span class="breakdown-value" id="othersValue">CHF 1,055,000</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-title">Asset Allocation</span>
-                    <span class="card-badge badge-blue" id="allocationBadge">Balanced</span>
-                </div>
-                <div class="donut-container">
-                    <div class="donut-wrapper">
-                        <svg viewBox="0 0 200 200" id="donutChart">
-                            <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="28"/>
-                        </svg>
-                        <div class="donut-center">
-                            <div class="donut-center-label">Total</div>
-                            <div class="donut-center-value" id="donutCenterValue">CHF 8.5M</div>
-                        </div>
-                    </div>
-                    <div class="donut-legend">
-                        <div class="legend-item"><div class="legend-dot" style="background:#60a5fa"></div> Equities <strong id="legendEquities">40%</strong></div>
-                        <div class="legend-item"><div class="legend-dot" style="background:#2dd4bf"></div> Real Estate <strong id="legendRE">33%</strong></div>
-                        <div class="legend-item"><div class="legend-dot" style="background:#94a3b8"></div> Cash <strong id="legendCash">15%</strong></div>
-                        <div class="legend-item"><div class="legend-dot" style="background:#a78bfa"></div> Others <strong id="legendOthers">12%</strong></div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Real estate properties -->
-        <div class="properties-section">
-            <div class="section-header">
-                <span class="section-title">Real Estate Assets</span>
-                <span class="card-badge badge-green" id="rePropertiesCount">2 Properties Monitored</span>
-            </div>
-            <div class="properties-grid">
-                <div class="property-card" id="property1">
-                    <div class="property-type">Primary Residence</div>
-                    <div class="property-address" id="property1Address">Bahnhofstrasse 42</div>
-                    <div class="property-city" id="property1City">8001 Zurich, Switzerland</div>
-                    <div class="property-stats">
-                        <div>
-                            <div class="property-value-label">Current Estimate</div>
-                            <div class="property-value-amount" id="property1Value">CHF 1,850,000</div>
-                        </div>
-                        <div class="property-change positive" id="property1Change">▲ +8.2%</div>
-                    </div>
-                    <div class="property-signal">
-                        <span>📊</span> Strong market performance detected — allocation impact review recommended
-                    </div>
-                </div>
-                <div class="property-card" id="property2">
-                    <div class="property-type">Investment Property</div>
-                    <div class="property-address">Seestrasse 15</div>
-                    <div class="property-city">8002 Zurich, Switzerland</div>
-                    <div class="property-stats">
-                        <div>
-                            <div class="property-value-label">Current Estimate</div>
-                            <div class="property-value-amount">CHF 920,000</div>
-                        </div>
-                        <div class="property-change positive">▲ +12.1%</div>
-                    </div>
-                    <div class="property-signal">
-                        <span>📊</span> Strong market performance detected — allocation impact review recommended
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Revenue streams -->
-        <div class="revenue-section">
-            <div class="section-header">
-                <span class="section-title">Revenue Streams</span>
-                <span class="card-badge badge-blue">Annual Overview</span>
-            </div>
-            <div class="revenue-card">
-                <div class="revenue-grid">
-                    <div class="revenue-item">
-                        <div class="revenue-item-label">Fixed Income</div>
-                        <div class="revenue-item-value">CHF 38,500</div>
-                        <div class="revenue-item-detail">Bonds & structured products</div>
-                    </div>
-                    <div class="revenue-item">
-                        <div class="revenue-item-label">Dividends</div>
-                        <div class="revenue-item-value">CHF 68,000</div>
-                        <div class="revenue-item-detail">Equity portfolio yield ~2.0%</div>
-                    </div>
-                    <div class="revenue-item">
-                        <div class="revenue-item-label">Rental Income</div>
-                        <div class="revenue-item-value" id="rentalIncome">CHF 42,000</div>
-                        <div class="revenue-item-detail" id="rentalIncomeDetail">Seestrasse 15 — Investment property</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Not-onboarded CTA -->
-        <div class="cta-section" id="onboardingCta" style="display:none">
-            <div class="cta-content">
-                <h2>Complete Your Wealth Picture</h2>
-                <p>Your financial portfolio is being managed — but your real estate assets aren't yet monitored. Add your properties to get a holistic view of your wealth, track performance, and ensure your overall asset allocation stays aligned with your goals.</p>
-            </div>
-            <button class="cta-button" onclick="openWidget()">Get Started</button>
-        </div>
-
-        <!-- Advisory CTA -->
-        <div class="cta-section" id="advisoryCta">
-            <div class="cta-content">
-                <h2>Speak with Your Real Estate Specialist</h2>
-                <p id="advisoryCtaText">Your property portfolio is showing strong performance. Our real estate specialist can explain what this means for your overall asset allocation and financial goals.</p>
-            </div>
-            <button class="cta-button" onclick="openWidget()">Start Conversation</button>
-        </div>
-
-        <!-- Demo controls -->
-        <div class="demo-controls">
-            <button class="demo-toggle" id="demoToggle">
-                <span class="chevron">▶</span>
-                Demo Controls — Agent Configuration
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-brand">your<span>_brand</span></div>
+        <div class="sidebar-nav">
+            <button class="nav-item active" data-page="overview">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                Overview
             </button>
-            <div class="demo-body" id="demoBody">
+            <button class="nav-item" data-page="wealth">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Wealth
+            </button>
+            <button class="nav-item" data-page="accounts">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                Accounts
+            </button>
+            <button class="nav-item" data-page="transfers">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+                Transfers
+            </button>
+            <button class="nav-item" data-page="cards">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/></svg>
+                Cards
+            </button>
+            <button class="nav-item" data-page="loans">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 100 4h4a2 2 0 010 4H8"/><line x1="12" y1="6" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="18"/></svg>
+                Loans
+            </button>
+            <div class="nav-divider"></div>
+            <button class="nav-item" data-page="investments">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                Investments
+            </button>
+            <button class="nav-item" data-page="real-estate" style="color:var(--teal)">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="opacity:1"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
+                Real Estate
+            </button>
+            <button class="nav-item" data-page="pension">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Pension
+            </button>
+            <button class="nav-item" data-page="currencies">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                Currencies
+            </button>
+            <div class="nav-divider"></div>
+            <button class="nav-item" data-page="assistant" onclick="openWidget()">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                Virtual Assistant
+            </button>
+            <button class="nav-item" data-page="einvoices">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                eInvoices
+            </button>
+        </div>
+        <div class="sidebar-footer">
+            <div class="sidebar-footer-avatar" id="sidebarAvatar">TK</div>
+            <div class="sidebar-footer-info">
+                <div class="sidebar-footer-name" id="sidebarName">Thomas Keller</div>
+                <div class="sidebar-footer-role">Private Banking</div>
+            </div>
+        </div>
+    </nav>
 
-                <div class="demo-section-title">Agent Mode</div>
-                <div class="toggle-row">
-                    <span class="toggle-label">isOnboarded</span>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="isOnboarded" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                    <span class="toggle-status onboarded" id="toggleStatusLabel">Advisory Mode</span>
-                </div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-                <div class="demo-section-title">Client Information</div>
-                <div class="demo-row">
-                    <div class="demo-field">
-                        <label>First Name <span class="var-hint">→ firstName</span></label>
-                        <input type="text" id="firstName" value="Thomas">
-                    </div>
-                    <div class="demo-field">
-                        <label>Last Name <span class="var-hint">→ lastName</span></label>
-                        <input type="text" id="lastName" value="Keller">
-                    </div>
-                    <div class="demo-field">
-                        <label>Phone <span class="var-hint">→ phone_number</span></label>
-                        <input type="tel" id="phone_number" value="+41791234567">
-                    </div>
+    <!-- Main content -->
+    <div class="main-area">
+        <div class="header">
+            <div class="header-left">
+                <button class="burger" id="burgerBtn" aria-label="Menu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+                <span class="header-page-title">Wealth Overview</span>
+            </div>
+            <div class="header-right">
+                <div class="header-advisor">
+                    <div class="advisor-avatar" id="advisorAvatar">MW</div>
+                    <span>Advisor: <strong id="advisorDisplay" style="color:var(--text-primary)">Dr. Martin Weber</strong></span>
                 </div>
-                <div class="demo-row">
-                    <div class="demo-field">
-                        <label>Email <span class="var-hint">→ email</span></label>
-                        <input type="email" id="email" value="thomas.keller@example.com">
-                    </div>
-                    <div class="demo-field">
-                        <label>Property Address <span class="var-hint">→ property_address</span></label>
-                        <input type="text" id="property_address" value="Bahnhofstrasse 42, 8001 Zurich">
-                    </div>
-                    <div class="demo-field">
-                        <label>Estimated Value <span class="var-hint">→ estimated_value</span></label>
-                        <input type="text" id="estimated_value" value="CHF 1,850,000">
-                    </div>
-                </div>
-
-                <div class="demo-section-title">Branding & Agent</div>
-                <div class="demo-row">
-                    <div class="demo-field">
-                        <label>Brand Name <span class="var-hint">→ brand_name</span></label>
-                        <input type="text" id="brand_name" value="your_brand">
-                    </div>
-                    <div class="demo-field">
-                        <label>Advisor Name <span class="var-hint">→ advisor_name</span></label>
-                        <input type="text" id="advisor_name" value="Dr. Martin Weber">
-                    </div>
-                    <div class="demo-field">
-                        <label>Value Change % <span class="var-hint">→ value_change_percent</span></label>
-                        <input type="text" id="value_change_percent" value="+8.2%">
-                    </div>
-                </div>
-                <div class="demo-row">
-                    <div class="demo-field">
-                        <label>Webhook URL <span class="var-hint">→ webhook</span></label>
-                        <input type="text" id="webhookUrl" value="">
-                    </div>
-                    <div class="demo-field">
-                        <label>Language <span class="var-hint">→ language_spoken</span></label>
-                        <select id="language_spoken">
-                            <option value="en" selected>English</option>
-                            <option value="de">German</option>
-                            <option value="fr">French</option>
-                            <option value="it">Italian</option>
-                        </select>
-                    </div>
-                    <div class="demo-field">
-                        <label>Agent ID Override <span class="var-hint">→ optional</span></label>
-                        <input type="text" id="agent_id_override" placeholder="Leave blank to use default">
-                    </div>
-                </div>
-
-                <div class="demo-actions">
-                    <button class="btn-trigger" id="triggerCall">Trigger Outbound Call</button>
-                    <button class="btn-secondary" id="saveConfig">Save Config</button>
-                    <button class="btn-secondary" id="clearConfig">Reset Defaults</button>
-                </div>
-
-                <div class="demo-log" id="logContainer">
-                    <div class="log-empty">No events yet.</div>
-                </div>
+                <div class="header-client" id="clientDisplay">Thomas Keller</div>
             </div>
         </div>
 
+        <div class="container">
+
+            <div class="welcome-bar">
+                <div>
+                    <h1 id="welcomeName">Welcome, Thomas</h1>
+                    <p>Your complete wealth overview</p>
+                </div>
+                <div class="date-badge" id="dateDisplay">March 31, 2026</div>
+            </div>
+
+            <div class="signal-banner" id="signalBanner">
+                <div class="signal-banner-icon">📈</div>
+                <div class="signal-banner-text">
+                    <h3>Real Estate Performance Alert</h3>
+                    <p id="signalBannerText">Your property portfolio has appreciated — this may impact your asset allocation.</p>
+                </div>
+                <button class="signal-banner-action" onclick="openWidget()">Review with Specialist</button>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Portfolio Summary</span>
+                        <span class="card-badge badge-green">+2.3% YTD</span>
+                    </div>
+                    <div class="portfolio-value" id="totalPortfolioValue">CHF 8,500,000</div>
+                    <div class="portfolio-change positive">
+                        <span>▲</span>
+                        <span id="quarterChange">+CHF 192,000 this quarter</span>
+                    </div>
+                    <div class="portfolio-breakdown">
+                        <div class="breakdown-item"><div class="breakdown-dot" style="background:#60a5fa"></div><span class="breakdown-label">Equities</span><span class="breakdown-value" id="equitiesValue">CHF 3,400,000</span></div>
+                        <div class="breakdown-item"><div class="breakdown-dot" style="background:#2dd4bf"></div><span class="breakdown-label">Real Estate</span><span class="breakdown-value" id="realEstateValue">CHF 2,770,000</span></div>
+                        <div class="breakdown-item"><div class="breakdown-dot" style="background:#94a3b8"></div><span class="breakdown-label">Cash</span><span class="breakdown-value" id="cashValue">CHF 1,275,000</span></div>
+                        <div class="breakdown-item"><div class="breakdown-dot" style="background:#a78bfa"></div><span class="breakdown-label">Others</span><span class="breakdown-value" id="othersValue">CHF 1,055,000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Asset Allocation</span>
+                        <span class="card-badge badge-blue" id="allocationBadge">Balanced</span>
+                    </div>
+                    <div class="donut-container">
+                        <div class="donut-wrapper">
+                            <svg viewBox="0 0 200 200" id="donutChart"><circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="28"/></svg>
+                            <div class="donut-center">
+                                <div class="donut-center-label">Total</div>
+                                <div class="donut-center-value" id="donutCenterValue">CHF 8.5M</div>
+                            </div>
+                        </div>
+                        <div class="donut-legend">
+                            <div class="legend-item"><div class="legend-dot" style="background:#60a5fa"></div> Equities <strong id="legendEquities">40%</strong></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#2dd4bf"></div> Real Estate <strong id="legendRE">33%</strong></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#94a3b8"></div> Cash <strong id="legendCash">15%</strong></div>
+                            <div class="legend-item"><div class="legend-dot" style="background:#a78bfa"></div> Others <strong id="legendOthers">12%</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="properties-section">
+                <div class="section-header">
+                    <span class="section-title">Real Estate Assets</span>
+                    <span class="card-badge badge-green" id="rePropertiesCount">2 Properties Monitored</span>
+                </div>
+                <div class="properties-grid">
+                    <div class="property-card" id="property1">
+                        <div class="property-type">Primary Residence</div>
+                        <div class="property-address" id="property1Address">Bahnhofstrasse 42</div>
+                        <div class="property-city" id="property1City">8001 Zurich, Switzerland</div>
+                        <div class="property-stats">
+                            <div><div class="property-value-label">Current Estimate</div><div class="property-value-amount" id="property1Value">CHF 1,850,000</div></div>
+                            <div class="property-change positive" id="property1Change">▲ +8.2%</div>
+                        </div>
+                        <div class="property-signal"><span>📊</span> Strong market performance detected — allocation impact review recommended</div>
+                    </div>
+                    <div class="property-card" id="property2">
+                        <div class="property-type">Investment Property</div>
+                        <div class="property-address">Seestrasse 15</div>
+                        <div class="property-city">8002 Zurich, Switzerland</div>
+                        <div class="property-stats">
+                            <div><div class="property-value-label">Current Estimate</div><div class="property-value-amount">CHF 920,000</div></div>
+                            <div class="property-change positive">▲ +12.1%</div>
+                        </div>
+                        <div class="property-signal"><span>📊</span> Strong market performance detected — allocation impact review recommended</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="revenue-section">
+                <div class="section-header">
+                    <span class="section-title">Revenue Streams</span>
+                    <span class="card-badge badge-blue">Annual Overview</span>
+                </div>
+                <div class="revenue-card">
+                    <div class="revenue-grid">
+                        <div class="revenue-item"><div class="revenue-item-label">Fixed Income</div><div class="revenue-item-value">CHF 38,500</div><div class="revenue-item-detail">Bonds & structured products</div></div>
+                        <div class="revenue-item"><div class="revenue-item-label">Dividends</div><div class="revenue-item-value">CHF 68,000</div><div class="revenue-item-detail">Equity portfolio yield ~2.0%</div></div>
+                        <div class="revenue-item"><div class="revenue-item-label">Rental Income</div><div class="revenue-item-value" id="rentalIncome">CHF 42,000</div><div class="revenue-item-detail" id="rentalIncomeDetail">Seestrasse 15 — Investment property</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-section" id="onboardingCta" style="display:none">
+                <div class="cta-content"><h2>Complete Your Wealth Picture</h2><p>Your financial portfolio is being managed — but your real estate assets aren't yet monitored. Add your properties to get a holistic view of your wealth, track performance, and ensure your overall asset allocation stays aligned with your goals.</p></div>
+                <button class="cta-button" onclick="openWidget()">Get Started</button>
+            </div>
+
+            <div class="cta-section" id="advisoryCta">
+                <div class="cta-content"><h2>Speak with Your Real Estate Specialist</h2><p id="advisoryCtaText">Your property portfolio is showing strong performance. Our real estate specialist can explain what this means for your overall asset allocation and financial goals.</p></div>
+                <button class="cta-button" onclick="openWidget()">Start Conversation</button>
+            </div>
+
+            <div class="demo-controls">
+                <button class="demo-toggle" id="demoToggle"><span class="chevron">▶</span> Demo Controls — Agent Configuration</button>
+                <div class="demo-body" id="demoBody">
+                    <div class="demo-section-title">Agent Mode</div>
+                    <div class="toggle-row">
+                        <span class="toggle-label">isOnboarded</span>
+                        <label class="toggle-switch"><input type="checkbox" id="isOnboarded" checked><span class="toggle-slider"></span></label>
+                        <span class="toggle-status onboarded" id="toggleStatusLabel">Advisory Mode</span>
+                    </div>
+                    <div class="demo-section-title">Client Information</div>
+                    <div class="demo-row">
+                        <div class="demo-field"><label>First Name <span class="var-hint">→ firstName</span></label><input type="text" id="firstName" value="Thomas"></div>
+                        <div class="demo-field"><label>Last Name <span class="var-hint">→ lastName</span></label><input type="text" id="lastName" value="Keller"></div>
+                        <div class="demo-field"><label>Phone <span class="var-hint">→ phone_number</span></label><input type="tel" id="phone_number" value="+41791234567"></div>
+                    </div>
+                    <div class="demo-row">
+                        <div class="demo-field"><label>Email <span class="var-hint">→ email</span></label><input type="email" id="email" value="thomas.keller@example.com"></div>
+                        <div class="demo-field"><label>Property Address <span class="var-hint">→ property_address</span></label><input type="text" id="property_address" value="Bahnhofstrasse 42, 8001 Zurich"></div>
+                        <div class="demo-field"><label>Estimated Value <span class="var-hint">→ estimated_value</span></label><input type="text" id="estimated_value" value="CHF 1,850,000"></div>
+                    </div>
+                    <div class="demo-section-title">Branding & Agent</div>
+                    <div class="demo-row">
+                        <div class="demo-field"><label>Brand Name <span class="var-hint">→ brand_name</span></label><input type="text" id="brand_name" value="your_brand"></div>
+                        <div class="demo-field"><label>Advisor Name <span class="var-hint">→ advisor_name</span></label><input type="text" id="advisor_name" value="Dr. Martin Weber"></div>
+                        <div class="demo-field"><label>Value Change % <span class="var-hint">→ value_change_percent</span></label><input type="text" id="value_change_percent" value="+8.2%"></div>
+                    </div>
+                    <div class="demo-row">
+                        <div class="demo-field"><label>Webhook URL <span class="var-hint">→ webhook</span></label><input type="text" id="webhookUrl" value=""></div>
+                        <div class="demo-field"><label>Language <span class="var-hint">→ language_spoken</span></label><select id="language_spoken"><option value="en" selected>English</option><option value="de">German</option><option value="fr">French</option><option value="it">Italian</option></select></div>
+                        <div class="demo-field"><label>Agent ID Override <span class="var-hint">→ optional</span></label><input type="text" id="agent_id_override" placeholder="Leave blank to use default"></div>
+                    </div>
+                    <div class="demo-actions">
+                        <button class="btn-trigger" id="triggerCall">Trigger Outbound Call</button>
+                        <button class="btn-secondary" id="saveConfig">Save Config</button>
+                        <button class="btn-secondary" id="clearConfig">Reset Defaults</button>
+                    </div>
+                    <div class="demo-log" id="logContainer"><div class="log-empty">No events yet.</div></div>
+                </div>
+            </div>
+
+        </div>
     </div>
+</div>
 
-    <div class="toast" id="toast"></div>
+<div class="toast" id="toast"></div>
 
-    <!-- ElevenLabs widget — always present -->
-    <elevenlabs-convai agent-id="agent_5001kmzh8p48fm0th0gtjpv9adaa" server-location="eu-residency"></elevenlabs-convai>
-    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+<elevenlabs-convai agent-id="agent_5001kmzh8p48fm0th0gtjpv9adaa" server-location="eu-residency"></elevenlabs-convai>
+<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 
-    <script>
-        const STORAGE_KEY = 'wealth-dashboard-config-v2';
-        const DEFAULT_AGENT_ID = 'agent_5001kmzh8p48fm0th0gtjpv9adaa';
+<script>
+    const STORAGE_KEY = 'wealth-dashboard-config-v2';
+    const DEFAULT_AGENT_ID = 'agent_5001kmzh8p48fm0th0gtjpv9adaa';
+    const $ = id => document.getElementById(id);
 
-        const $ = id => document.getElementById(id);
+    // Sidebar toggle
+    const sidebar = $('sidebar');
+    const overlay = $('sidebarOverlay');
+    const burgerBtn = $('burgerBtn');
 
-        const els = {
-            isOnboarded: $('isOnboarded'),
-            toggleStatusLabel: $('toggleStatusLabel'),
-            firstName: $('firstName'),
-            lastName: $('lastName'),
-            phone_number: $('phone_number'),
-            email: $('email'),
-            property_address: $('property_address'),
-            estimated_value: $('estimated_value'),
-            brand_name: $('brand_name'),
-            advisor_name: $('advisor_name'),
-            value_change_percent: $('value_change_percent'),
-            agent_id_override: $('agent_id_override'),
-            webhookUrl: $('webhookUrl'),
-            language_spoken: $('language_spoken'),
-            triggerCall: $('triggerCall'),
-            saveConfig: $('saveConfig'),
-            clearConfig: $('clearConfig'),
-            demoToggle: $('demoToggle'),
-            demoBody: $('demoBody'),
-            logContainer: $('logContainer'),
-            toast: $('toast'),
-            signalBanner: $('signalBanner'),
-            onboardingCta: $('onboardingCta'),
-            advisoryCta: $('advisoryCta'),
-        };
+    function toggleSidebar() {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('visible');
+    }
+    burgerBtn.addEventListener('click', toggleSidebar);
+    overlay.addEventListener('click', toggleSidebar);
 
-        const DEFAULTS = {
-            isOnboarded: true,
-            firstName: 'Thomas',
-            lastName: 'Keller',
-            phone_number: '+41791234567',
-            email: 'thomas.keller@example.com',
-            property_address: 'Bahnhofstrasse 42, 8001 Zurich',
-            estimated_value: 'CHF 1,850,000',
-            brand_name: 'your_brand',
-            advisor_name: 'Dr. Martin Weber',
-            value_change_percent: '+8.2%',
-            agent_id_override: '',
-            webhookUrl: '',
-            language_spoken: 'en',
-        };
-
-        const PERSIST_FIELDS = [
-            'firstName', 'lastName', 'phone_number', 'email', 'property_address',
-            'estimated_value', 'brand_name', 'advisor_name', 'value_change_percent',
-            'agent_id_override', 'webhookUrl', 'language_spoken',
-        ];
-
-        function getAgentId() {
-            return (els.agent_id_override && els.agent_id_override.value) || DEFAULT_AGENT_ID;
-        }
-
-        function loadConfig() {
-            try {
-                const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-                PERSIST_FIELDS.forEach(key => {
-                    if (els[key]) els[key].value = data[key] || DEFAULTS[key] || '';
-                });
-                if (data.isOnboarded !== undefined) els.isOnboarded.checked = data.isOnboarded;
-            } catch (_) {}
-        }
-
-        function saveConfigData() {
-            const data = { isOnboarded: els.isOnboarded.checked };
-            PERSIST_FIELDS.forEach(key => { if (els[key]) data[key] = els[key].value; });
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-            showToast('Configuration saved');
-        }
-
-        function clearConfigData() {
-            localStorage.removeItem(STORAGE_KEY);
-            PERSIST_FIELDS.forEach(key => { if (els[key]) els[key].value = DEFAULTS[key] || ''; });
-            els.isOnboarded.checked = DEFAULTS.isOnboarded;
-            updateDashboardMode();
-            showToast('Defaults restored');
-        }
-
-        function showToast(msg) {
-            els.toast.textContent = msg;
-            els.toast.classList.add('show');
-            setTimeout(() => els.toast.classList.remove('show'), 2500);
-        }
-
-        let logEntries = [];
-
-        function log(msg, level = 'info') {
-            const time = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            logEntries.push({ time, msg, level });
-            if (logEntries.length === 1) els.logContainer.innerHTML = '';
-            const entry = document.createElement('div');
-            entry.className = 'log-entry';
-            entry.innerHTML = `<span class="log-time">${time}</span><span class="log-msg ${level}">${msg}</span>`;
-            els.logContainer.appendChild(entry);
-            els.logContainer.scrollTop = els.logContainer.scrollHeight;
-        }
-
-        function openWidget() {
-            const widget = document.querySelector('elevenlabs-convai');
-            if (!widget) return;
-
-            updateWidgetVars();
-
-            try {
-                const shadow = widget.shadowRoot;
-                if (shadow) {
-                    const btn = shadow.querySelector('button') || shadow.querySelector('[role="button"]') || shadow.querySelector('.trigger');
-                    if (btn) { btn.click(); return; }
-                }
-            } catch (_) {}
-
-            widget.scrollIntoView({ behavior: 'smooth', block: 'end' });
-            showToast('Click the chat bubble in the bottom-right to start');
-        }
-
-        function updateWidgetVars() {
-            const widget = document.querySelector('elevenlabs-convai');
-            if (!widget) return;
-
-            const agentId = getAgentId();
-            if (widget.getAttribute('agent-id') !== agentId) {
-                widget.setAttribute('agent-id', agentId);
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+            if (item.dataset.page && item.dataset.page !== 'assistant') {
+                showToast('Page "' + item.textContent.trim() + '" — placeholder');
             }
-
-            const vars = {
-                brand_name: els.brand_name.value || DEFAULTS.brand_name,
-                name: `${els.firstName.value || DEFAULTS.firstName} ${els.lastName.value || DEFAULTS.lastName}`.trim(),
-                advisor_name: els.advisor_name.value || DEFAULTS.advisor_name,
-                isOnboarded: String(els.isOnboarded.checked),
-                property_address: els.property_address.value || DEFAULTS.property_address,
-                estimated_value: els.estimated_value.value || DEFAULTS.estimated_value,
-                value_change_percent: els.value_change_percent.value || DEFAULTS.value_change_percent,
-                language_spoken: els.language_spoken.value || 'en',
-            };
-            widget.setAttribute('dynamic-variables', JSON.stringify(vars));
-        }
-
-        const PROPERTY_1_VALUE = 1850000;
-        const PROPERTY_2_VALUE = 920000;
-        const TOTAL_RE = PROPERTY_1_VALUE + PROPERTY_2_VALUE;
-
-        function updateDashboardMode() {
-            const onboarded = els.isOnboarded.checked;
-            const firstName = els.firstName.value || DEFAULTS.firstName;
-            const lastName = els.lastName.value || DEFAULTS.lastName;
-            const advisorName = els.advisor_name.value || DEFAULTS.advisor_name;
-
-            els.toggleStatusLabel.textContent = onboarded ? 'Advisory Mode' : 'Onboarding Mode';
-            els.toggleStatusLabel.className = 'toggle-status ' + (onboarded ? 'onboarded' : 'not-onboarded');
-
-            $('welcomeName').textContent = `Welcome, ${firstName}`;
-            $('clientDisplay').textContent = `${firstName} ${lastName}`;
-            $('advisorDisplay').textContent = advisorName;
-            $('advisorAvatar').textContent = advisorName.split(' ').map(w => w[0]).filter((_, i, a) => i === 0 || i === a.length - 1).join('').toUpperCase().slice(0, 2);
-
-            els.signalBanner.classList.toggle('visible', onboarded);
-
-            document.querySelectorAll('.property-card').forEach(c => c.classList.toggle('highlighted', onboarded));
-
-            $('onboardingCta').style.display = onboarded ? 'none' : 'flex';
-            $('advisoryCta').style.display = onboarded ? 'flex' : 'none';
-
-            if (!onboarded) {
-                $('rePropertiesCount').textContent = 'Not Yet Monitored';
-                $('rePropertiesCount').className = 'card-badge badge-amber';
-                document.querySelectorAll('.property-card').forEach(c => {
-                    c.style.opacity = '0.5';
-                    c.style.filter = 'blur(2px)';
-                    c.style.pointerEvents = 'none';
-                });
-                $('rentalIncome').textContent = '\u2014';
-                $('rentalIncomeDetail').textContent = 'No monitored investment properties';
-            } else {
-                $('rePropertiesCount').textContent = '2 Properties Monitored';
-                $('rePropertiesCount').className = 'card-badge badge-green';
-                document.querySelectorAll('.property-card').forEach(c => {
-                    c.style.opacity = '1';
-                    c.style.filter = 'none';
-                    c.style.pointerEvents = 'auto';
-                });
-                $('rentalIncome').textContent = 'CHF 42,000';
-                $('rentalIncomeDetail').textContent = 'Seestrasse 15 \u2014 Investment property';
-            }
-
-            if (onboarded) {
-                $('advisoryCtaText').textContent = `Your property portfolio is showing strong performance (${els.value_change_percent.value || '+8.2%'}). Our real estate specialist can explain what this means for your overall asset allocation and financial goals.`;
-            }
-
-            updateDonutChart(onboarded);
-            updateWidgetVars();
-        }
-
-        function fmt(n) { return 'CHF ' + n.toLocaleString('en-CH'); }
-
-        function updateDonutChart(onboarded) {
-            const equities = 3400000;
-            const cash = 1275000;
-            const others = 1055000;
-            const re = onboarded ? TOTAL_RE : 2200000;
-            const total = equities + re + cash + others;
-
-            const pctEquities = Math.round(equities / total * 100);
-            const pctRE = Math.round(re / total * 100);
-            const pctCash = Math.round(cash / total * 100);
-            const pctOthers = 100 - pctEquities - pctRE - pctCash;
-
-            const colors = ['#60a5fa', '#2dd4bf', '#94a3b8', '#a78bfa'];
-            const values = [pctEquities, pctRE, pctCash, pctOthers];
-
-            const svg = $('donutChart');
-            svg.innerHTML = '';
-            const r = 80;
-            const circumference = 2 * Math.PI * r;
-            let offset = -circumference / 4;
-
-            values.forEach((pct, i) => {
-                const segLen = (pct / 100) * circumference;
-                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                circle.setAttribute('cx', '100');
-                circle.setAttribute('cy', '100');
-                circle.setAttribute('r', String(r));
-                circle.setAttribute('fill', 'none');
-                circle.setAttribute('stroke', colors[i]);
-                circle.setAttribute('stroke-width', '28');
-                circle.setAttribute('stroke-dasharray', `${segLen} ${circumference - segLen}`);
-                circle.setAttribute('stroke-dashoffset', String(-offset));
-                circle.style.transition = 'all 0.6s ease';
-                svg.appendChild(circle);
-                offset += segLen;
-            });
-
-            $('legendEquities').textContent = pctEquities + '%';
-            $('legendRE').textContent = pctRE + '%';
-            $('legendCash').textContent = pctCash + '%';
-            $('legendOthers').textContent = pctOthers + '%';
-
-            $('equitiesValue').textContent = fmt(equities);
-            $('realEstateValue').textContent = fmt(re);
-            $('cashValue').textContent = fmt(cash);
-            $('othersValue').textContent = fmt(others);
-
-            $('totalPortfolioValue').textContent = fmt(total);
-            $('donutCenterValue').textContent = 'CHF ' + (total / 1000000).toFixed(1) + 'M';
-
-            const quarterDelta = Math.round(total * 0.023);
-            $('quarterChange').textContent = '+CHF ' + quarterDelta.toLocaleString('en-CH') + ' this quarter';
-
-            if (onboarded) {
-                $('allocationBadge').textContent = 'RE Overweight';
-                $('allocationBadge').className = 'card-badge badge-amber';
-            } else {
-                $('allocationBadge').textContent = 'Balanced';
-                $('allocationBadge').className = 'card-badge badge-blue';
-            }
-        }
-
-        function v(el, fallback) { return (el && el.value) || fallback || ''; }
-
-        async function fireWebhook(url, payload) {
-            const jsonBody = JSON.stringify(payload);
-            try {
-                const resp = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: jsonBody });
-                let body = null;
-                try { body = await resp.json(); } catch (_) {}
-                return { status: resp.status, body, ok: resp.ok, mode: 'cors' };
-            } catch (_) {
-                try {
-                    const resp = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: jsonBody });
-                    let body = null;
-                    try { body = await resp.json(); } catch (_) {}
-                    return { status: resp.status, body, ok: resp.ok, mode: 'text-plain' };
-                } catch (_) {
-                    return { status: 0, body: null, ok: true, mode: 'opaque' };
-                }
-            }
-        }
-
-        async function triggerOutboundCall() {
-            const webhookUrl = els.webhookUrl.value;
-            if (!webhookUrl) {
-                log('No webhook URL configured — open demo controls', 'err');
-                showToast('Configure webhook URL first');
-                return;
-            }
-
-            els.triggerCall.disabled = true;
-            const firstName = v(els.firstName, DEFAULTS.firstName);
-            const lastName = v(els.lastName, DEFAULTS.lastName);
-            const mode = els.isOnboarded.checked ? 'ADVISORY' : 'ONBOARDING';
-
-            log(`Triggering ${mode} outbound call for ${firstName} ${lastName}...`, 'warn');
-
-            const payload = {
-                signal_type: els.isOnboarded.checked ? 'valuation_increase' : 'onboarding_outreach',
-                mode: mode,
-                isOnboarded: String(els.isOnboarded.checked),
-                firstName, lastName,
-                name: `${firstName} ${lastName}`.trim(),
-                phone_number: v(els.phone_number, DEFAULTS.phone_number),
-                email: v(els.email, DEFAULTS.email),
-                property_address: v(els.property_address, DEFAULTS.property_address),
-                estimated_value: v(els.estimated_value, DEFAULTS.estimated_value),
-                value_change_percent: v(els.value_change_percent, DEFAULTS.value_change_percent),
-                brand_name: v(els.brand_name, DEFAULTS.brand_name),
-                advisor_name: v(els.advisor_name, DEFAULTS.advisor_name),
-                agent_id: getAgentId(),
-                language_spoken: v(els.language_spoken, DEFAULTS.language_spoken),
-            };
-
-            try {
-                const result = await fireWebhook(webhookUrl, payload);
-                log(`Webhook response: HTTP ${result.status} (${result.mode})`, result.ok ? 'ok' : 'err');
-            } catch (err) {
-                log(`Webhook failed: ${err.message}`, 'err');
-            }
-
-            log(`Payload: ${JSON.stringify(payload).substring(0, 120)}...`, 'info');
-            log(`${mode} outbound call triggered`, 'ok');
-            els.triggerCall.disabled = false;
-        }
-
-        els.isOnboarded.addEventListener('change', updateDashboardMode);
-        els.triggerCall.addEventListener('click', triggerOutboundCall);
-        els.saveConfig.addEventListener('click', saveConfigData);
-        els.clearConfig.addEventListener('click', clearConfigData);
-
-        els.demoToggle.addEventListener('click', () => {
-            const open = els.demoBody.classList.toggle('open');
-            els.demoToggle.classList.toggle('open', open);
+            if (window.innerWidth <= 900) toggleSidebar();
         });
+    });
 
-        [...document.querySelectorAll('.demo-field input, .demo-field select')].forEach(el => {
-            el.addEventListener('change', () => { updateDashboardMode(); });
-        });
+    const els = {
+        isOnboarded: $('isOnboarded'), toggleStatusLabel: $('toggleStatusLabel'),
+        firstName: $('firstName'), lastName: $('lastName'), phone_number: $('phone_number'),
+        email: $('email'), property_address: $('property_address'), estimated_value: $('estimated_value'),
+        brand_name: $('brand_name'), advisor_name: $('advisor_name'), value_change_percent: $('value_change_percent'),
+        agent_id_override: $('agent_id_override'), webhookUrl: $('webhookUrl'), language_spoken: $('language_spoken'),
+        triggerCall: $('triggerCall'), saveConfig: $('saveConfig'), clearConfig: $('clearConfig'),
+        demoToggle: $('demoToggle'), demoBody: $('demoBody'), logContainer: $('logContainer'),
+        toast: $('toast'), signalBanner: $('signalBanner'), onboardingCta: $('onboardingCta'), advisoryCta: $('advisoryCta'),
+    };
 
-        $('dateDisplay').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-        loadConfig();
+    const DEFAULTS = {
+        isOnboarded: true, firstName: 'Thomas', lastName: 'Keller',
+        phone_number: '+41791234567', email: 'thomas.keller@example.com',
+        property_address: 'Bahnhofstrasse 42, 8001 Zurich', estimated_value: 'CHF 1,850,000',
+        brand_name: 'your_brand', advisor_name: 'Dr. Martin Weber', value_change_percent: '+8.2%',
+        agent_id_override: '', webhookUrl: '', language_spoken: 'en',
+    };
+
+    const PERSIST_FIELDS = ['firstName','lastName','phone_number','email','property_address','estimated_value','brand_name','advisor_name','value_change_percent','agent_id_override','webhookUrl','language_spoken'];
+
+    function getAgentId() { return (els.agent_id_override && els.agent_id_override.value) || DEFAULT_AGENT_ID; }
+
+    function loadConfig() {
+        try {
+            const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+            PERSIST_FIELDS.forEach(key => { if (els[key]) els[key].value = data[key] || DEFAULTS[key] || ''; });
+            if (data.isOnboarded !== undefined) els.isOnboarded.checked = data.isOnboarded;
+        } catch (_) {}
+    }
+
+    function saveConfigData() {
+        const data = { isOnboarded: els.isOnboarded.checked };
+        PERSIST_FIELDS.forEach(key => { if (els[key]) data[key] = els[key].value; });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        showToast('Configuration saved');
+    }
+
+    function clearConfigData() {
+        localStorage.removeItem(STORAGE_KEY);
+        PERSIST_FIELDS.forEach(key => { if (els[key]) els[key].value = DEFAULTS[key] || ''; });
+        els.isOnboarded.checked = DEFAULTS.isOnboarded;
         updateDashboardMode();
-        log('Wealth dashboard ready — widget active', 'ok');
-    </script>
+        showToast('Defaults restored');
+    }
+
+    function showToast(msg) { els.toast.textContent = msg; els.toast.classList.add('show'); setTimeout(() => els.toast.classList.remove('show'), 2500); }
+
+    let logEntries = [];
+    function log(msg, level = 'info') {
+        const time = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        logEntries.push({ time, msg, level });
+        if (logEntries.length === 1) els.logContainer.innerHTML = '';
+        const entry = document.createElement('div'); entry.className = 'log-entry';
+        entry.innerHTML = `<span class="log-time">${time}</span><span class="log-msg ${level}">${msg}</span>`;
+        els.logContainer.appendChild(entry); els.logContainer.scrollTop = els.logContainer.scrollHeight;
+    }
+
+    function openWidget() {
+        const widget = document.querySelector('elevenlabs-convai');
+        if (!widget) return;
+        updateWidgetVars();
+        try { const s = widget.shadowRoot; if (s) { const b = s.querySelector('button') || s.querySelector('[role="button"]'); if (b) { b.click(); return; } } } catch (_) {}
+        widget.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        showToast('Click the chat bubble in the bottom-right to start');
+    }
+
+    function updateWidgetVars() {
+        const widget = document.querySelector('elevenlabs-convai');
+        if (!widget) return;
+        const agentId = getAgentId();
+        if (widget.getAttribute('agent-id') !== agentId) widget.setAttribute('agent-id', agentId);
+        const vars = {
+            brand_name: els.brand_name.value || DEFAULTS.brand_name,
+            name: `${els.firstName.value || DEFAULTS.firstName} ${els.lastName.value || DEFAULTS.lastName}`.trim(),
+            advisor_name: els.advisor_name.value || DEFAULTS.advisor_name,
+            isOnboarded: String(els.isOnboarded.checked),
+            property_address: els.property_address.value || DEFAULTS.property_address,
+            estimated_value: els.estimated_value.value || DEFAULTS.estimated_value,
+            value_change_percent: els.value_change_percent.value || DEFAULTS.value_change_percent,
+            language_spoken: els.language_spoken.value || 'en',
+        };
+        widget.setAttribute('dynamic-variables', JSON.stringify(vars));
+    }
+
+    const PROPERTY_1_VALUE = 1850000, PROPERTY_2_VALUE = 920000;
+    const TOTAL_RE = PROPERTY_1_VALUE + PROPERTY_2_VALUE;
+
+    function updateDashboardMode() {
+        const onboarded = els.isOnboarded.checked;
+        const firstName = els.firstName.value || DEFAULTS.firstName;
+        const lastName = els.lastName.value || DEFAULTS.lastName;
+        const advisorName = els.advisor_name.value || DEFAULTS.advisor_name;
+
+        els.toggleStatusLabel.textContent = onboarded ? 'Advisory Mode' : 'Onboarding Mode';
+        els.toggleStatusLabel.className = 'toggle-status ' + (onboarded ? 'onboarded' : 'not-onboarded');
+
+        $('welcomeName').textContent = `Welcome, ${firstName}`;
+        $('clientDisplay').textContent = `${firstName} ${lastName}`;
+        $('advisorDisplay').textContent = advisorName;
+        $('advisorAvatar').textContent = advisorName.split(' ').map(w => w[0]).filter((_, i, a) => i === 0 || i === a.length - 1).join('').toUpperCase().slice(0, 2);
+        $('sidebarName').textContent = `${firstName} ${lastName}`;
+        $('sidebarAvatar').textContent = `${firstName[0] || ''}${lastName[0] || ''}`.toUpperCase();
+
+        els.signalBanner.classList.toggle('visible', onboarded);
+        document.querySelectorAll('.property-card').forEach(c => c.classList.toggle('highlighted', onboarded));
+
+        $('onboardingCta').style.display = onboarded ? 'none' : 'flex';
+        $('advisoryCta').style.display = onboarded ? 'flex' : 'none';
+
+        if (!onboarded) {
+            $('rePropertiesCount').textContent = 'Not Yet Monitored';
+            $('rePropertiesCount').className = 'card-badge badge-amber';
+            document.querySelectorAll('.property-card').forEach(c => { c.style.opacity = '0.5'; c.style.filter = 'blur(2px)'; c.style.pointerEvents = 'none'; });
+            $('rentalIncome').textContent = '\u2014';
+            $('rentalIncomeDetail').textContent = 'No monitored investment properties';
+        } else {
+            $('rePropertiesCount').textContent = '2 Properties Monitored';
+            $('rePropertiesCount').className = 'card-badge badge-green';
+            document.querySelectorAll('.property-card').forEach(c => { c.style.opacity = '1'; c.style.filter = 'none'; c.style.pointerEvents = 'auto'; });
+            $('rentalIncome').textContent = 'CHF 42,000';
+            $('rentalIncomeDetail').textContent = 'Seestrasse 15 \u2014 Investment property';
+        }
+
+        if (onboarded) $('advisoryCtaText').textContent = `Your property portfolio is showing strong performance (${els.value_change_percent.value || '+8.2%'}). Our real estate specialist can explain what this means for your overall asset allocation and financial goals.`;
+
+        updateDonutChart(onboarded);
+        updateWidgetVars();
+    }
+
+    function fmt(n) { return 'CHF ' + n.toLocaleString('en-CH'); }
+
+    function updateDonutChart(onboarded) {
+        const equities = 3400000, cash = 1275000, others = 1055000;
+        const re = onboarded ? TOTAL_RE : 2200000;
+        const total = equities + re + cash + others;
+        const pE = Math.round(equities/total*100), pR = Math.round(re/total*100), pC = Math.round(cash/total*100), pO = 100-pE-pR-pC;
+        const colors = ['#60a5fa','#2dd4bf','#94a3b8','#a78bfa'], vals = [pE,pR,pC,pO];
+        const svg = $('donutChart'); svg.innerHTML = '';
+        const r = 80, circ = 2*Math.PI*r; let off = -circ/4;
+        vals.forEach((p,i) => {
+            const s = (p/100)*circ, c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+            c.setAttribute('cx','100'); c.setAttribute('cy','100'); c.setAttribute('r',String(r));
+            c.setAttribute('fill','none'); c.setAttribute('stroke',colors[i]); c.setAttribute('stroke-width','28');
+            c.setAttribute('stroke-dasharray',`${s} ${circ-s}`); c.setAttribute('stroke-dashoffset',String(-off));
+            c.style.transition='all 0.6s ease'; svg.appendChild(c); off+=s;
+        });
+        $('legendEquities').textContent=pE+'%'; $('legendRE').textContent=pR+'%'; $('legendCash').textContent=pC+'%'; $('legendOthers').textContent=pO+'%';
+        $('equitiesValue').textContent=fmt(equities); $('realEstateValue').textContent=fmt(re); $('cashValue').textContent=fmt(cash); $('othersValue').textContent=fmt(others);
+        $('totalPortfolioValue').textContent=fmt(total); $('donutCenterValue').textContent='CHF '+(total/1e6).toFixed(1)+'M';
+        $('quarterChange').textContent='+CHF '+Math.round(total*0.023).toLocaleString('en-CH')+' this quarter';
+        if(onboarded){$('allocationBadge').textContent='RE Overweight';$('allocationBadge').className='card-badge badge-amber';}
+        else{$('allocationBadge').textContent='Balanced';$('allocationBadge').className='card-badge badge-blue';}
+    }
+
+    function v(el,fb){return(el&&el.value)||fb||'';}
+
+    async function fireWebhook(url,payload){
+        const j=JSON.stringify(payload);
+        try{const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:j});let b=null;try{b=await r.json();}catch(_){}return{status:r.status,body:b,ok:r.ok,mode:'cors'};}
+        catch(_){try{const r=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},body:j});let b=null;try{b=await r.json();}catch(_){}return{status:r.status,body:b,ok:r.ok,mode:'text-plain'};}catch(_){return{status:0,body:null,ok:true,mode:'opaque'};}}
+    }
+
+    async function triggerOutboundCall(){
+        const wh=els.webhookUrl.value; if(!wh){log('No webhook URL configured','err');showToast('Configure webhook URL first');return;}
+        els.triggerCall.disabled=true;
+        const fn=v(els.firstName,DEFAULTS.firstName),ln=v(els.lastName,DEFAULTS.lastName),mode=els.isOnboarded.checked?'ADVISORY':'ONBOARDING';
+        log(`Triggering ${mode} outbound call for ${fn} ${ln}...`,'warn');
+        const payload={signal_type:els.isOnboarded.checked?'valuation_increase':'onboarding_outreach',mode,isOnboarded:String(els.isOnboarded.checked),firstName:fn,lastName:ln,name:`${fn} ${ln}`.trim(),phone_number:v(els.phone_number,DEFAULTS.phone_number),email:v(els.email,DEFAULTS.email),property_address:v(els.property_address,DEFAULTS.property_address),estimated_value:v(els.estimated_value,DEFAULTS.estimated_value),value_change_percent:v(els.value_change_percent,DEFAULTS.value_change_percent),brand_name:v(els.brand_name,DEFAULTS.brand_name),advisor_name:v(els.advisor_name,DEFAULTS.advisor_name),agent_id:getAgentId(),language_spoken:v(els.language_spoken,DEFAULTS.language_spoken)};
+        try{const res=await fireWebhook(wh,payload);log(`Webhook: HTTP ${res.status} (${res.mode})`,res.ok?'ok':'err');}catch(e){log(`Webhook failed: ${e.message}`,'err');}
+        log(`${mode} outbound call triggered`,'ok'); els.triggerCall.disabled=false;
+    }
+
+    els.isOnboarded.addEventListener('change',updateDashboardMode);
+    els.triggerCall.addEventListener('click',triggerOutboundCall);
+    els.saveConfig.addEventListener('click',saveConfigData);
+    els.clearConfig.addEventListener('click',clearConfigData);
+    els.demoToggle.addEventListener('click',()=>{const o=els.demoBody.classList.toggle('open');els.demoToggle.classList.toggle('open',o);});
+    [...document.querySelectorAll('.demo-field input, .demo-field select')].forEach(el=>{el.addEventListener('change',()=>{updateDashboardMode();});});
+
+    $('dateDisplay').textContent=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+    loadConfig(); updateDashboardMode(); log('Wealth dashboard ready — widget active','ok');
+</script>
 </body>
 </html>
