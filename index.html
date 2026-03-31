@@ -307,11 +307,37 @@
             .sidebar.open { transform: translateX(0); }
             .main-area { margin-left: 0; }
             .burger { display: flex; align-items: center; justify-content: center; }
-            .dashboard-grid, .properties-grid, .demo-row, .demo-row-2, .revenue-grid { grid-template-columns: 1fr; }
-            .cta-section { flex-direction: column; text-align: center; }
-            .header { padding: 0 1rem; }
+
+            .header { padding: 0 0.75rem; height: 48px; }
+            .header-right { gap: 0.75rem; }
+            .header-advisor span { display: none; }
+            .header-client { display: none; }
+            .header-page-title { font-size: 0.8125rem; }
+
             .container { padding: 1rem; }
-            .portfolio-value { font-size: 2rem; }
+            .portfolio-value { font-size: 1.75rem; }
+
+            .welcome-bar { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            .date-badge { align-self: flex-start; }
+
+            .signal-banner { flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 1rem 1.25rem; }
+            .signal-banner-action { align-self: stretch; text-align: center; }
+
+            .dashboard-grid, .properties-grid, .demo-row, .demo-row-2, .revenue-grid { grid-template-columns: 1fr; }
+
+            .cta-section { flex-direction: column; text-align: center; gap: 1.25rem; padding: 1.5rem; }
+            .cta-button { width: 100%; text-align: center; }
+
+            .portfolio-breakdown { grid-template-columns: 1fr; }
+            .breakdown-item { padding: 0.5rem 0.75rem; }
+
+            .donut-wrapper { width: 160px; height: 160px; }
+            .donut-legend { gap: 0.625rem; }
+
+            .property-card { padding: 1rem; }
+            .property-value-amount { font-size: 1.125rem; }
+
+            .revenue-card { padding: 1rem; }
         }
     </style>
 </head>
