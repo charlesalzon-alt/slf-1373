@@ -739,12 +739,12 @@
                     <div class="demo-row">
                         <div class="demo-field"><label>Brand Name <span class="var-hint">→ brand_name</span></label><input type="text" id="brand_name" value="your_brand"></div>
                         <div class="demo-field"><label>Advisor Name <span class="var-hint">→ advisor_name</span></label><input type="text" id="advisor_name" value="Dr. Martin Weber"></div>
-                        <div class="demo-field"><label>Agent ID Override <span class="var-hint">→ optional</span></label><input type="text" id="agent_id_override" placeholder="Leave blank to use default"></div>
+                        <div class="demo-field"><label>AI Agent Name <span class="var-hint">→ ai_agent_name</span></label><input type="text" id="ai_agent_name" value="Anna"></div>
                     </div>
                     <div class="demo-row">
+                        <div class="demo-field"><label>Agent ID Override <span class="var-hint">→ optional</span></label><input type="text" id="agent_id_override" placeholder="Leave blank to use default"></div>
+                        <div class="demo-field"><label>Prior Contact <span class="var-hint">→ PRIOR_CONTACT</span></label><select id="prior_contact"><option value="false" selected>First Contact</option><option value="true">Follow-up</option></select></div>
                         <div class="demo-field"><label>Webhook URL <span class="var-hint">→ webhook</span></label><input type="text" id="webhookUrl" value=""></div>
-                        <div class="demo-field"></div>
-                        <div class="demo-field"></div>
                     </div>
                     <div class="demo-actions">
                         <button class="btn-trigger" id="triggerCall">Trigger Outbound Call</button>
@@ -782,13 +782,13 @@
 
     const PROP_FIELDS = ['address','value','change','purchase_price','purchase_year','period','score_perf','score_yield','score_market','score_energy'];
     const P2_EXTRA_FIELDS = ['equity','net_cashflow'];
-    const GENERAL_FIELDS = ['firstName','lastName','phone_number','email','brand_name','advisor_name','agent_id_override','webhookUrl','language_spoken','target_re_pct'];
+    const GENERAL_FIELDS = ['firstName','lastName','phone_number','email','brand_name','advisor_name','ai_agent_name','agent_id_override','webhookUrl','language_spoken','target_re_pct','prior_contact'];
 
     const DEFAULTS = {
         isOnboarded: true, firstName: 'Thomas', lastName: 'Keller',
         phone_number: '+41791234567', email: 'thomas.keller@example.com',
-        brand_name: 'your_brand', advisor_name: 'Dr. Martin Weber',
-        agent_id_override: '', webhookUrl: '', language_spoken: 'en',
+        brand_name: 'your_brand', advisor_name: 'Dr. Martin Weber', ai_agent_name: 'Anna',
+        agent_id_override: '', webhookUrl: '', language_spoken: 'en', prior_contact: 'false',
         target_re_pct: '29',
         p1_address: 'Bahnhofstrasse 42, 8001 Zurich', p1_value: 'CHF 1,850,000', p1_change: '+8.2%',
         p1_purchase_price: 'CHF 1,710,000', p1_purchase_year: '2018', p1_period: 'since purchase',
@@ -904,12 +904,18 @@
         if (!widget) return;
         const agentId = getAgentId();
         if (widget.getAttribute('agent-id') !== agentId) widget.setAttribute('agent-id', agentId);
-        const props = buildPropertiesArray();
+        const props = buildPropertiesArray().map(p => {
+            const out = { ...p, value_change_period: p.period };
+            delete out.period;
+            return out;
+        });
         const vars = {
             brand_name: v('brand_name', DEFAULTS.brand_name),
             name: `${v('firstName', DEFAULTS.firstName)} ${v('lastName', DEFAULTS.lastName)}`.trim(),
             advisor_name: v('advisor_name', DEFAULTS.advisor_name),
+            ai_agent_name: v('ai_agent_name', DEFAULTS.ai_agent_name),
             isOnboarded: String($('isOnboarded').checked),
+            PRIOR_CONTACT: String(v('prior_contact', 'false') === 'true'),
             properties: JSON.stringify(props),
             language_spoken: v('language_spoken', 'en'),
         };
