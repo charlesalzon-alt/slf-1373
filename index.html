@@ -232,6 +232,41 @@
         .score-low .score-bar-fill { background: var(--red); } .score-low .score-value { color: var(--red); }
         .score-na .score-value { color: var(--text-muted); }
 
+        .score-pill { position: relative; cursor: help; }
+        .score-pill .score-tooltip { display: none; position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: var(--bg-elevated); border: 1px solid var(--border-hover); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 0.6875rem; line-height: 1.5; color: var(--text-secondary); white-space: nowrap; z-index: 20; pointer-events: none; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+        .score-pill .score-tooltip::after { content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:5px solid transparent; border-top-color:var(--border-hover); }
+        .score-pill:hover .score-tooltip { display: block; }
+        .score-tooltip .tt-title { color: var(--text-primary); font-weight: 600; margin-bottom: 4px; }
+        .score-tooltip .tt-scale { display: flex; gap: 6px; margin-top: 4px; }
+        .score-tooltip .tt-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+        .property-purchase { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed rgba(255,255,255,0.06); }
+        .property-purchase-label { font-size: 0.625rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
+        .property-purchase-val { font-size: 0.8125rem; font-weight: 600; color: var(--text-secondary); }
+        .property-purchase-unknown { font-size: 0.75rem; color: var(--amber); font-style: italic; cursor: pointer; }
+        .property-purchase-unknown:hover { text-decoration: underline; }
+
+        .perf-period { font-size: 0.5625rem; color: var(--text-muted); font-weight: 500; margin-left: 0.25rem; }
+
+        .alloc-comparison { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.75rem; padding: 0.625rem 0.875rem; background: rgba(251,191,36,0.06); border: 1px solid rgba(251,191,36,0.12); border-radius: var(--radius-sm); font-size: 0.75rem; }
+        .alloc-comparison .alloc-icon { font-size: 0.875rem; }
+        .alloc-comparison .alloc-text { color: var(--text-secondary); flex: 1; }
+        .alloc-comparison .alloc-text strong { color: var(--amber); }
+
+        .irr-section { margin-bottom: 1.5rem; }
+        .irr-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; backdrop-filter: blur(16px); }
+        .irr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+        .irr-item { padding: 1rem; background: var(--surface-alt); border-radius: var(--radius-sm); border: 1px solid transparent; transition: border-color 0.15s; }
+        .irr-item:hover { border-color: var(--border); }
+        .irr-item-label { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 0.375rem; }
+        .irr-item-value { font-size: 1.375rem; font-weight: 700; }
+        .irr-item-value.positive { color: var(--green); }
+        .irr-item-value.negative { color: var(--red); }
+        .irr-item-value.neutral { color: var(--text-primary); }
+        .irr-item-detail { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; }
+        .irr-assumptions { margin-top: 0.75rem; padding: 0.75rem; background: rgba(255,255,255,0.02); border-radius: var(--radius-sm); font-size: 0.6875rem; color: var(--text-muted); line-height: 1.6; }
+        .irr-assumptions strong { color: var(--text-secondary); }
+
         .property-signal { display: none; align-items: center; gap: 0.375rem; margin-top: 0.75rem; padding: 0.5rem 0.75rem; background: var(--teal-dim); border: 1px solid rgba(45,212,191,0.1); border-radius: var(--radius-sm); font-size: 0.75rem; font-weight: 500; color: var(--teal); }
         .property-card.highlighted .property-signal { display: flex; }
 
@@ -530,6 +565,10 @@
                             <div class="legend-item"><div class="legend-dot" style="background:#94a3b8"></div> Cash <strong id="legendCash">15%</strong></div>
                             <div class="legend-item"><div class="legend-dot" style="background:#a78bfa"></div> Others <strong id="legendOthers">12%</strong></div>
                         </div>
+                        <div class="alloc-comparison" id="allocComparison" style="display:none">
+                            <span class="alloc-icon">⚖️</span>
+                            <span class="alloc-text" id="allocComparisonText">RE at <strong>33%</strong> vs <strong>29%</strong> agreed target — consider rebalancing via leverage or liquidation strategy</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -546,7 +585,11 @@
                         <div class="property-city" id="prop1City">8001 Zurich, Switzerland</div>
                         <div class="property-stats">
                             <div><div class="property-value-label">Current Estimate</div><div class="property-value-amount" id="prop1Value">CHF 1,850,000</div></div>
-                            <div class="property-change positive" id="prop1Change">▲ +8.2%</div>
+                            <div class="property-change positive" id="prop1Change">▲ +8.2%<span class="perf-period" id="prop1Period">since purchase</span></div>
+                        </div>
+                        <div class="property-purchase" id="prop1Purchase">
+                            <span class="property-purchase-label">Purchase Price</span>
+                            <span class="property-purchase-val" id="prop1PurchaseVal">CHF 1,710,000</span>
                         </div>
                         <div class="property-scores" id="prop1Scores"></div>
                         <div class="property-signal"><span>📊</span> Strong market performance detected — allocation impact review recommended</div>
@@ -557,10 +600,48 @@
                         <div class="property-city" id="prop2City">8002 Zurich, Switzerland</div>
                         <div class="property-stats">
                             <div><div class="property-value-label">Current Estimate</div><div class="property-value-amount" id="prop2Value">CHF 920,000</div></div>
-                            <div class="property-change positive" id="prop2Change">▲ +12.1%</div>
+                            <div class="property-change positive" id="prop2Change">▲ +12.1%<span class="perf-period" id="prop2Period">since purchase</span></div>
+                        </div>
+                        <div class="property-purchase" id="prop2Purchase">
+                            <span class="property-purchase-label">Purchase Price</span>
+                            <span class="property-purchase-val" id="prop2PurchaseVal">CHF 820,000</span>
                         </div>
                         <div class="property-scores" id="prop2Scores"></div>
                         <div class="property-signal"><span>📊</span> Strong market performance detected — allocation impact review recommended</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="irr-section" id="irrSection" style="display:none">
+                <div class="section-header">
+                    <span class="section-title">Investment Property — Return Analysis</span>
+                    <span class="card-badge badge-green" id="irrBadge">IRR Estimate</span>
+                </div>
+                <div class="irr-card">
+                    <div class="irr-grid">
+                        <div class="irr-item">
+                            <div class="irr-item-label">Estimated IRR (since purchase)</div>
+                            <div class="irr-item-value positive" id="irrValue">6.2%</div>
+                            <div class="irr-item-detail" id="irrDetail">Equity CHF 287,000 → CHF 413,000 over 7 years</div>
+                        </div>
+                        <div class="irr-item">
+                            <div class="irr-item-label">Annual Net Cashflow</div>
+                            <div class="irr-item-value negative" id="cashflowValue">−CHF 3,200</div>
+                            <div class="irr-item-detail" id="cashflowDetail">Rental income net of mortgage, maintenance, tax</div>
+                        </div>
+                        <div class="irr-item">
+                            <div class="irr-item-label">Capital Gain (unrealised)</div>
+                            <div class="irr-item-value positive" id="capGainValue">+CHF 100,000</div>
+                            <div class="irr-item-detail" id="capGainDetail">Purchase CHF 820,000 → Current CHF 920,000</div>
+                        </div>
+                        <div class="irr-item">
+                            <div class="irr-item-label">Equity Multiple</div>
+                            <div class="irr-item-value neutral" id="equityMultiple">1.44x</div>
+                            <div class="irr-item-detail" id="equityMultipleDetail">On initial equity of CHF 287,000</div>
+                        </div>
+                    </div>
+                    <div class="irr-assumptions" id="irrAssumptions">
+                        <strong>Assumptions:</strong> Net rental yield ~2.5% gross, mortgage at 65% LTV (~1.3% SARON-linked), maintenance 1% p.a., management ~5% of rent. In Switzerland, net cashflows on investment properties are typically neutral to slightly negative due to income taxation and low yields in prime locations (Zurich avg net yield ~1.8%). <strong>Capital appreciation is the primary return driver.</strong>
                     </div>
                 </div>
             </div>
@@ -615,6 +696,11 @@
                         <div class="demo-field"><label>Estimated Value <span class="var-hint">→ properties[0].estimated_value</span></label><input type="text" id="p1_value" value="CHF 1,850,000"></div>
                         <div class="demo-field"><label>Value Change <span class="var-hint">→ properties[0].value_change_percent</span></label><input type="text" id="p1_change" value="+8.2%"></div>
                     </div>
+                    <div class="demo-row">
+                        <div class="demo-field"><label>Purchase Price <span class="var-hint">→ properties[0].purchase_price</span></label><input type="text" id="p1_purchase_price" value="CHF 1,710,000"></div>
+                        <div class="demo-field"><label>Purchase Year <span class="var-hint">→ properties[0].purchase_year</span></label><input type="number" id="p1_purchase_year" value="2018" min="1950" max="2026"></div>
+                        <div class="demo-field"><label>Period <span class="var-hint">→ reference period</span></label><select id="p1_period"><option value="since purchase" selected>Since Purchase</option><option value="YTD">YTD</option><option value="YoY">Year-on-Year</option><option value="12 months">12 Months</option></select></div>
+                    </div>
                     <div class="demo-row" style="grid-template-columns:1fr 1fr 1fr 1fr">
                         <div class="demo-field"><label>Performance <span class="var-hint">→ scores (0–100)</span></label><input type="number" id="p1_score_perf" value="82" min="0" max="100"></div>
                         <div class="demo-field"><label>Yield <span class="var-hint">→ scores (0–100)</span></label><input type="number" id="p1_score_yield" value="" placeholder="n/a"></div>
@@ -627,11 +713,27 @@
                         <div class="demo-field"><label>Estimated Value <span class="var-hint">→ properties[1].estimated_value</span></label><input type="text" id="p2_value" value="CHF 920,000"></div>
                         <div class="demo-field"><label>Value Change <span class="var-hint">→ properties[1].value_change_percent</span></label><input type="text" id="p2_change" value="+12.1%"></div>
                     </div>
+                    <div class="demo-row">
+                        <div class="demo-field"><label>Purchase Price <span class="var-hint">→ properties[1].purchase_price</span></label><input type="text" id="p2_purchase_price" value="CHF 820,000"></div>
+                        <div class="demo-field"><label>Purchase Year <span class="var-hint">→ properties[1].purchase_year</span></label><input type="number" id="p2_purchase_year" value="2019" min="1950" max="2026"></div>
+                        <div class="demo-field"><label>Equity Invested <span class="var-hint">→ properties[1].equity_invested</span></label><input type="text" id="p2_equity" value="CHF 287,000"></div>
+                    </div>
+                    <div class="demo-row">
+                        <div class="demo-field"><label>Annual Net Cashflow <span class="var-hint">→ after mortgage, tax, costs</span></label><input type="text" id="p2_net_cashflow" value="-3200"></div>
+                        <div class="demo-field"><label>Period <span class="var-hint">→ reference period</span></label><select id="p2_period"><option value="since purchase" selected>Since Purchase</option><option value="YTD">YTD</option><option value="YoY">Year-on-Year</option><option value="12 months">12 Months</option></select></div>
+                        <div class="demo-field"></div>
+                    </div>
                     <div class="demo-row" style="grid-template-columns:1fr 1fr 1fr 1fr">
                         <div class="demo-field"><label>Performance <span class="var-hint">→ scores (0–100)</span></label><input type="number" id="p2_score_perf" value="91" min="0" max="100"></div>
                         <div class="demo-field"><label>Yield <span class="var-hint">→ scores (0–100)</span></label><input type="number" id="p2_score_yield" value="65" min="0" max="100"></div>
                         <div class="demo-field"><label>Market <span class="var-hint">→ scores (0–100)</span></label><input type="number" id="p2_score_market" value="78" min="0" max="100"></div>
                         <div class="demo-field"><label>Energy <span class="var-hint">→ scores (0–100)</span></label><input type="number" id="p2_score_energy" value="53" min="0" max="100"></div>
+                    </div>
+                    <div class="demo-section-title">Allocation Target</div>
+                    <div class="demo-row">
+                        <div class="demo-field"><label>Target RE Allocation % <span class="var-hint">→ agreed target</span></label><input type="number" id="target_re_pct" value="29" min="0" max="100"></div>
+                        <div class="demo-field"></div>
+                        <div class="demo-field"></div>
                     </div>
                     <div class="demo-section-title">Branding & Agent</div>
                     <div class="demo-row">
@@ -663,7 +765,7 @@
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 
 <script>
-    const STORAGE_KEY = 'wealth-dashboard-config-v3';
+    const STORAGE_KEY = 'wealth-dashboard-config-v4';
     const DEFAULT_AGENT_ID = 'agent_5001kmzh8p48fm0th0gtjpv9adaa';
     const $ = id => document.getElementById(id);
 
@@ -678,17 +780,22 @@
         });
     });
 
-    const PROP_FIELDS = ['address','value','change','score_perf','score_yield','score_market','score_energy'];
-    const GENERAL_FIELDS = ['firstName','lastName','phone_number','email','brand_name','advisor_name','agent_id_override','webhookUrl','language_spoken'];
+    const PROP_FIELDS = ['address','value','change','purchase_price','purchase_year','period','score_perf','score_yield','score_market','score_energy'];
+    const P2_EXTRA_FIELDS = ['equity','net_cashflow'];
+    const GENERAL_FIELDS = ['firstName','lastName','phone_number','email','brand_name','advisor_name','agent_id_override','webhookUrl','language_spoken','target_re_pct'];
 
     const DEFAULTS = {
         isOnboarded: true, firstName: 'Thomas', lastName: 'Keller',
         phone_number: '+41791234567', email: 'thomas.keller@example.com',
         brand_name: 'your_brand', advisor_name: 'Dr. Martin Weber',
         agent_id_override: '', webhookUrl: '', language_spoken: 'en',
+        target_re_pct: '29',
         p1_address: 'Bahnhofstrasse 42, 8001 Zurich', p1_value: 'CHF 1,850,000', p1_change: '+8.2%',
+        p1_purchase_price: 'CHF 1,710,000', p1_purchase_year: '2018', p1_period: 'since purchase',
         p1_score_perf: '82', p1_score_yield: '', p1_score_market: '74', p1_score_energy: '41',
         p2_address: 'Seestrasse 15, 8002 Zurich', p2_value: 'CHF 920,000', p2_change: '+12.1%',
+        p2_purchase_price: 'CHF 820,000', p2_purchase_year: '2019', p2_period: 'since purchase',
+        p2_equity: 'CHF 287,000', p2_net_cashflow: '-3200',
         p2_score_perf: '91', p2_score_yield: '65', p2_score_market: '78', p2_score_energy: '53',
     };
 
@@ -701,8 +808,11 @@
     function buildPropertiesArray() {
         return [
             { label: 'Primary Residence', address: v('p1_address', DEFAULTS.p1_address), estimated_value: v('p1_value', DEFAULTS.p1_value), value_change_percent: v('p1_change', DEFAULTS.p1_change),
+              purchase_price: v('p1_purchase_price', DEFAULTS.p1_purchase_price), purchase_year: v('p1_purchase_year', DEFAULTS.p1_purchase_year), period: v('p1_period', DEFAULTS.p1_period),
               scores: { performance: parseScore('p1_score_perf'), yield: parseScore('p1_score_yield'), market: parseScore('p1_score_market'), energy: parseScore('p1_score_energy') } },
             { label: 'Investment Property', address: v('p2_address', DEFAULTS.p2_address), estimated_value: v('p2_value', DEFAULTS.p2_value), value_change_percent: v('p2_change', DEFAULTS.p2_change),
+              purchase_price: v('p2_purchase_price', DEFAULTS.p2_purchase_price), purchase_year: v('p2_purchase_year', DEFAULTS.p2_purchase_year), period: v('p2_period', DEFAULTS.p2_period),
+              equity_invested: v('p2_equity', DEFAULTS.p2_equity), annual_net_cashflow: parseInt(v('p2_net_cashflow', DEFAULTS.p2_net_cashflow)) || 0,
               scores: { performance: parseScore('p2_score_perf'), yield: parseScore('p2_score_yield'), market: parseScore('p2_score_market'), energy: parseScore('p2_score_energy') } },
         ];
     }
@@ -715,6 +825,14 @@
         return 'score-low';
     }
 
+    const SCORE_TOOLTIPS = {
+        performance: { title: 'Performance Score', desc: 'Capital appreciation relative to comparable properties in the area. Based on price evolution and market positioning.' },
+        yield: { title: 'Yield Score', desc: 'Rental income potential relative to property value. Compares gross yield to local benchmarks.' },
+        market: { title: 'Market Health', desc: 'Local market dynamics: supply/demand balance, days on market, vacancy rates, and price momentum.' },
+        energy: { title: 'Energy Efficiency', desc: 'Building energy rating and renovation potential. Factors in DPE/GEAK class and projected regulatory impact.' },
+    };
+    const SCORE_SCALE = '<div class="tt-scale"><span class="tt-dot" style="background:var(--red)"></span> 0–39 <span class="tt-dot" style="background:var(--amber)"></span> 40–59 <span class="tt-dot" style="background:var(--blue)"></span> 60–79 <span class="tt-dot" style="background:var(--green)"></span> 80–100</div>';
+
     function renderScores(containerId, scores) {
         const c = $(containerId); if (!c) return;
         const labels = { performance: 'Perf.', yield: 'Yield', market: 'Market', energy: 'Energy' };
@@ -723,31 +841,37 @@
             const cls = scoreClass(val);
             const display = val === null ? '—' : val;
             const width = val === null ? 0 : val;
-            return `<div class="score-pill ${cls}"><span class="score-label">${lbl}</span><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill" style="width:${width}%"></div></div><span class="score-value">${display}</span></div></div>`;
+            const tt = SCORE_TOOLTIPS[key];
+            return `<div class="score-pill ${cls}"><span class="score-label">${lbl}</span><div class="score-bar-wrap"><div class="score-bar"><div class="score-bar-fill" style="width:${width}%"></div></div><span class="score-value">${display}</span></div><div class="score-tooltip"><div class="tt-title">${tt.title}</div>${tt.desc}${SCORE_SCALE}</div></div>`;
         }).join('');
     }
+
+    const ALL_FIELD_IDS = (() => {
+        const ids = [];
+        GENERAL_FIELDS.forEach(k => ids.push(k));
+        ['p1','p2'].forEach(p => PROP_FIELDS.forEach(f => ids.push(`${p}_${f}`)));
+        P2_EXTRA_FIELDS.forEach(f => ids.push(`p2_${f}`));
+        return ids;
+    })();
 
     function loadConfig() {
         try {
             const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-            GENERAL_FIELDS.forEach(k => { const e = $(k); if (e) e.value = data[k] || DEFAULTS[k] || ''; });
-            ['p1','p2'].forEach(p => PROP_FIELDS.forEach(f => { const id = `${p}_${f}`; const e = $(id); if (e) e.value = data[id] !== undefined ? data[id] : (DEFAULTS[id] || ''); }));
+            ALL_FIELD_IDS.forEach(id => { const e = $(id); if (e) e.value = data[id] !== undefined ? data[id] : (DEFAULTS[id] || ''); });
             if (data.isOnboarded !== undefined) $('isOnboarded').checked = data.isOnboarded;
         } catch (_) {}
     }
 
     function saveConfigData() {
         const data = { isOnboarded: $('isOnboarded').checked };
-        GENERAL_FIELDS.forEach(k => { const e = $(k); if (e) data[k] = e.value; });
-        ['p1','p2'].forEach(p => PROP_FIELDS.forEach(f => { const id = `${p}_${f}`; const e = $(id); if (e) data[id] = e.value; }));
+        ALL_FIELD_IDS.forEach(id => { const e = $(id); if (e) data[id] = e.value; });
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
         showToast('Configuration saved');
     }
 
     function clearConfigData() {
         localStorage.removeItem(STORAGE_KEY);
-        GENERAL_FIELDS.forEach(k => { const e = $(k); if (e) e.value = DEFAULTS[k] || ''; });
-        ['p1','p2'].forEach(p => PROP_FIELDS.forEach(f => { const id = `${p}_${f}`; const e = $(id); if (e) e.value = DEFAULTS[id] || ''; }));
+        ALL_FIELD_IDS.forEach(id => { const e = $(id); if (e) e.value = DEFAULTS[id] || ''; });
         $('isOnboarded').checked = DEFAULTS.isOnboarded;
         updateDashboardMode();
         showToast('Defaults restored');
@@ -804,7 +928,18 @@
             $(prefix + 'Address').textContent = addrParts[0] || p.address;
             $(prefix + 'City').textContent = addrParts.slice(1).join(', ') || '';
             $(prefix + 'Value').textContent = p.estimated_value;
-            $(prefix + 'Change').textContent = `▲ ${p.value_change_percent}`;
+            const changeEl = $(prefix + 'Change');
+            changeEl.innerHTML = `▲ ${p.value_change_percent}<span class="perf-period">${p.period || 'since purchase'}</span>`;
+            const purchaseEl = $(prefix + 'PurchaseVal');
+            if (purchaseEl) {
+                if (p.purchase_price && parseCHF(p.purchase_price) > 0) {
+                    purchaseEl.textContent = p.purchase_price;
+                    purchaseEl.className = 'property-purchase-val';
+                } else {
+                    purchaseEl.textContent = 'Unknown — ask client';
+                    purchaseEl.className = 'property-purchase-unknown';
+                }
+            }
             if (onboarded) renderScores(scoresId, p.scores);
             else $(scoresId).innerHTML = '';
         });
@@ -852,12 +987,60 @@
             $('rentalIncomeDetail').textContent = (props[1] ? props[1].address.split(',')[0] : 'Investment property') + ' \u2014 Investment property';
         }
 
-        const leadChange = props[0] ? props[0].value_change_percent : '+8.2%';
-        if (onboarded) $('advisoryCtaText').textContent = `Your property portfolio is showing strong performance (${leadChange}). Our real estate specialist can explain what this means for your overall asset allocation and financial goals.`;
-
         const totalRE = props.reduce((s, p) => s + parseCHF(p.estimated_value), 0);
+        const totalPurchase = props.reduce((s, p) => s + parseCHF(p.purchase_price || '0'), 0);
+        let weightedPerfPct = 0;
+        if (totalPurchase > 0) {
+            weightedPerfPct = ((totalRE - totalPurchase) / totalPurchase * 100).toFixed(1);
+        }
+        if (onboarded) {
+            const perfStr = weightedPerfPct > 0 ? `+${weightedPerfPct}%` : `${weightedPerfPct}%`;
+            $('advisoryCtaText').textContent = `Your real estate portfolio has appreciated ${perfStr} (weighted average across ${props.length} properties). Our specialist can discuss what this means for your overall allocation strategy and help align your goals.`;
+        }
+
+        updateIRR(props, onboarded);
         updateDonutChart(onboarded, totalRE);
         updateWidgetVars();
+    }
+
+    function updateIRR(props, onboarded) {
+        const section = $('irrSection');
+        const invProp = props[1];
+        if (!onboarded || !invProp || !invProp.equity_invested) { section.style.display = 'none'; return; }
+        section.style.display = 'block';
+
+        const currentVal = parseCHF(invProp.estimated_value);
+        const purchaseVal = parseCHF(invProp.purchase_price || '0');
+        const equity = parseCHF(invProp.equity_invested);
+        const annualCF = invProp.annual_net_cashflow || 0;
+        const purchaseYear = parseInt(invProp.purchase_year) || 2019;
+        const holdYears = Math.max(1, 2026 - purchaseYear);
+
+        const mortgage = purchaseVal - equity;
+        const currentEquity = currentVal - mortgage;
+        const capGain = currentVal - purchaseVal;
+        const totalCF = annualCF * holdYears;
+        const equityMult = equity > 0 ? (currentEquity + totalCF) / equity : 0;
+
+        let irr = 0;
+        if (equity > 0 && holdYears > 0) {
+            const finalValue = currentEquity + totalCF;
+            irr = (Math.pow(finalValue / equity, 1 / holdYears) - 1) * 100;
+        }
+
+        $('irrValue').textContent = (irr >= 0 ? '' : '') + irr.toFixed(1) + '%';
+        $('irrValue').className = 'irr-item-value ' + (irr >= 0 ? 'positive' : 'negative');
+        $('irrDetail').textContent = `Equity ${fmt(equity)} → ${fmt(Math.round(currentEquity))} over ${holdYears} years`;
+
+        $('cashflowValue').textContent = (annualCF >= 0 ? '+' : '−') + 'CHF ' + Math.abs(annualCF).toLocaleString('en-CH');
+        $('cashflowValue').className = 'irr-item-value ' + (annualCF >= 0 ? 'positive' : 'negative');
+
+        $('capGainValue').textContent = (capGain >= 0 ? '+' : '−') + fmt(Math.abs(capGain));
+        $('capGainValue').className = 'irr-item-value ' + (capGain >= 0 ? 'positive' : 'negative');
+        $('capGainDetail').textContent = `Purchase ${invProp.purchase_price} → Current ${invProp.estimated_value}`;
+
+        $('equityMultiple').textContent = equityMult.toFixed(2) + 'x';
+        $('equityMultipleDetail').textContent = `On initial equity of ${fmt(equity)}`;
     }
 
     function updateDonutChart(onboarded, reValue) {
@@ -879,8 +1062,22 @@
         $('equitiesValue').textContent=fmt(equities); $('realEstateValue').textContent=fmt(re); $('cashValue').textContent=fmt(cash); $('othersValue').textContent=fmt(others);
         $('totalPortfolioValue').textContent=fmt(total); $('donutCenterValue').textContent='CHF '+(total/1e6).toFixed(1)+'M';
         $('quarterChange').textContent='+CHF '+Math.round(total*0.023).toLocaleString('en-CH')+' this quarter';
-        if(onboarded){$('allocationBadge').textContent='RE Overweight';$('allocationBadge').className='card-badge badge-amber';}
-        else{$('allocationBadge').textContent='Balanced';$('allocationBadge').className='card-badge badge-blue';}
+        const targetRE = parseInt(v('target_re_pct', DEFAULTS.target_re_pct)) || 29;
+        const allocComp = $('allocComparison');
+        if (onboarded && pR > targetRE) {
+            $('allocationBadge').textContent = `RE ${pR}% vs ${targetRE}% target`;
+            $('allocationBadge').className = 'card-badge badge-amber';
+            allocComp.style.display = 'flex';
+            $('allocComparisonText').innerHTML = `RE at <strong>${pR}%</strong> vs <strong>${targetRE}%</strong> agreed target — ${pR - targetRE}pp overweight. Consider rebalancing via leverage strategy or partial liquidation.`;
+        } else if (onboarded) {
+            $('allocationBadge').textContent = 'On Target';
+            $('allocationBadge').className = 'card-badge badge-green';
+            allocComp.style.display = 'none';
+        } else {
+            $('allocationBadge').textContent = 'Balanced';
+            $('allocationBadge').className = 'card-badge badge-blue';
+            allocComp.style.display = 'none';
+        }
     }
 
     async function fireWebhook(url, payload) {
@@ -921,7 +1118,7 @@
     [...document.querySelectorAll('.demo-field input, .demo-field select')].forEach(el => { el.addEventListener('change', () => { updateDashboardMode(); }); });
 
     $('dateDisplay').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-    loadConfig(); updateDashboardMode(); log('Wealth dashboard v3 ready — per-property scores active', 'ok');
+    loadConfig(); updateDashboardMode(); log('Wealth dashboard v4 ready — IRR, purchase price, score tooltips, allocation target', 'ok');
 </script>
 </body>
 </html>
