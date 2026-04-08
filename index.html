@@ -565,7 +565,6 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="card-title">Asset Allocation</span>
-                        <span class="card-badge badge-blue" id="allocationBadge">Balanced</span>
                     </div>
                     <div class="donut-container">
                         <div class="donut-wrapper">
@@ -1092,17 +1091,9 @@
         const targetRE = parseInt(v('target_re_pct', DEFAULTS.target_re_pct)) || 29;
         const allocComp = $('allocComparison');
         if (onboarded && pR > targetRE) {
-            $('allocationBadge').textContent = `RE ${pR}% → ${targetRE}% target`;
-            $('allocationBadge').className = 'card-badge badge-amber';
             allocComp.style.display = 'flex';
             $('allocComparisonText').innerHTML = `RE at <strong>${pR}%</strong> vs <strong>${targetRE}%</strong> agreed target — ${pR - targetRE}pp overweight. Consider rebalancing via leverage strategy or partial liquidation.`;
-        } else if (onboarded) {
-            $('allocationBadge').textContent = 'On Target';
-            $('allocationBadge').className = 'card-badge badge-green';
-            allocComp.style.display = 'none';
         } else {
-            $('allocationBadge').textContent = 'Balanced';
-            $('allocationBadge').className = 'card-badge badge-blue';
             allocComp.style.display = 'none';
         }
     }
