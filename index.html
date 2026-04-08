@@ -611,7 +611,6 @@
                         <div class="property-right">
                             <div class="property-scores" id="prop1Scores"></div>
                         </div>
-                        <div class="property-signal"><span>📊</span> Strong market performance detected — allocation impact review recommended</div>
                     </div>
                     <div class="property-card" id="property2">
                         <div class="property-type">Investment Property</div>
@@ -1115,14 +1114,17 @@
         const payload = {
             signal_type: $('isOnboarded').checked ? 'valuation_increase' : 'onboarding_outreach',
             mode, isOnboarded: String($('isOnboarded').checked),
+            PRIOR_CONTACT: String(v('prior_contact', 'false') === 'true'),
             firstName: fn, lastName: ln, name: `${fn} ${ln}`.trim(),
             phone_number: v('phone_number', DEFAULTS.phone_number),
             email: v('email', DEFAULTS.email),
-            properties: props,
+            properties: props.map(p => { const out = { ...p, value_change_period: p.period }; delete out.period; return out; }),
             brand_name: v('brand_name', DEFAULTS.brand_name),
             advisor_name: v('advisor_name', DEFAULTS.advisor_name),
+            ai_agent_name: v('ai_agent_name', DEFAULTS.ai_agent_name),
             agent_id: getAgentId(),
             language_spoken: v('language_spoken', DEFAULTS.language_spoken),
+            sms_enabled: false,
         };
         try { const res = await fireWebhook(wh, payload); log(`Webhook: HTTP ${res.status} (${res.mode})`, res.ok ? 'ok' : 'err'); } catch(e) { log(`Webhook failed: ${e.message}`, 'err'); }
         log(`${mode} outbound call triggered`, 'ok'); $('triggerCall').disabled = false;
