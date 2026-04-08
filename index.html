@@ -205,9 +205,14 @@
         .properties-section { margin-bottom: 1.5rem; }
         .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
         .section-title { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
-        .properties-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .property-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.25rem; position: relative; overflow: hidden; backdrop-filter: blur(16px); transition: all 0.25s; }
+        .properties-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+        .property-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1.5rem; position: relative; overflow: hidden; backdrop-filter: blur(16px); transition: all 0.25s; display: grid; grid-template-columns: 1fr 1fr; gap: 0 2rem; }
         .property-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+        .property-card .property-type { grid-column: 1 / -1; }
+        .property-card .property-left { display: flex; flex-direction: column; justify-content: center; }
+        .property-card .property-right { display: flex; flex-direction: column; justify-content: center; border-left: 1px solid var(--border); padding-left: 2rem; }
+        .property-card .property-right .property-scores { margin-top: 0; padding-top: 0; border-top: none; grid-template-columns: 1fr 1fr; }
+        .property-card .property-signal { grid-column: 1 / -1; }
         .property-card.highlighted { border-color: rgba(45,212,191,0.3); box-shadow: 0 0 30px -8px rgba(45,212,191,0.12); }
         .property-card.highlighted::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--teal), transparent); }
         .property-type { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 0.5rem; }
@@ -261,8 +266,9 @@
         .alloc-comparison .alloc-text { color: var(--text-muted); flex: 1; }
         .alloc-comparison .alloc-text strong { color: var(--amber); font-weight: 700; }
 
-        .irr-section { margin-bottom: 1.5rem; }
-        .irr-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; backdrop-filter: blur(16px); }
+        .irr-section { margin-bottom: 1.5rem; margin-top: -0.25rem; position: relative; }
+        .irr-section::before { content: ''; position: absolute; top: -0.75rem; left: 2rem; width: 1px; height: 0.75rem; background: linear-gradient(to bottom, var(--border), var(--teal)); }
+        .irr-card { background: var(--surface); border: 1px solid rgba(45,212,191,0.15); border-radius: var(--radius-lg); padding: 1.5rem; backdrop-filter: blur(16px); }
         .irr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
         .irr-item { padding: 1rem; background: var(--surface-alt); border-radius: var(--radius-sm); border: 1px solid transparent; transition: all 0.2s; }
         .irr-item:hover { border-color: var(--border); background: rgba(255,255,255,0.06); }
@@ -388,7 +394,7 @@
             .portfolio-change { font-size: 0.8125rem; }
 
             .dashboard-grid { gap: 1rem; }
-            .dashboard-grid, .properties-grid, .demo-row, .demo-row-2, .revenue-grid, .irr-grid { grid-template-columns: 1fr; }
+            .dashboard-grid, .demo-row, .demo-row-2, .revenue-grid, .irr-grid { grid-template-columns: 1fr; }
             .demo-row[style*="grid-template-columns:1fr 1fr 1fr 1fr"] { grid-template-columns: 1fr 1fr !important; }
             .property-scores { grid-template-columns: 1fr 1fr; }
 
@@ -405,7 +411,8 @@
             .section-header { margin-bottom: 0.75rem; }
             .section-title { font-size: 0.9375rem; }
             .properties-grid { gap: 0.75rem; }
-            .property-card { padding: 1rem; }
+            .property-card { padding: 1rem; grid-template-columns: 1fr; }
+            .property-card .property-right { border-left: none; padding-left: 0; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
             .property-address { font-size: 0.9375rem; }
             .property-value-amount { font-size: 1.125rem; }
             .property-insight { font-size: 0.75rem; padding: 0.5rem 0.625rem; }
@@ -589,32 +596,40 @@
                 <div class="properties-grid">
                     <div class="property-card" id="property1">
                         <div class="property-type">Primary Residence</div>
-                        <div class="property-address" id="prop1Address">Bahnhofstrasse 42</div>
-                        <div class="property-city" id="prop1City">8001 Zurich, Switzerland</div>
-                        <div class="property-stats">
-                            <div><div class="property-value-label">Current Estimate</div><div class="property-value-amount" id="prop1Value">CHF 1,850,000</div></div>
-                            <div class="property-change positive" id="prop1Change"><span class="property-change-pct">▲ +8.2%</span><span class="perf-period" id="prop1Period">since purchase</span></div>
+                        <div class="property-left">
+                            <div class="property-address" id="prop1Address">Bahnhofstrasse 42</div>
+                            <div class="property-city" id="prop1City">8001 Zurich, Switzerland</div>
+                            <div class="property-stats">
+                                <div><div class="property-value-label">Current Estimate</div><div class="property-value-amount" id="prop1Value">CHF 1,850,000</div></div>
+                                <div class="property-change positive" id="prop1Change"><span class="property-change-pct">▲ +8.2%</span><span class="perf-period" id="prop1Period">since purchase</span></div>
+                            </div>
+                            <div class="property-purchase" id="prop1Purchase">
+                                <span class="property-purchase-label">Purchase Price</span>
+                                <span class="property-purchase-val" id="prop1PurchaseVal">CHF 1,710,000</span>
+                            </div>
                         </div>
-                        <div class="property-purchase" id="prop1Purchase">
-                            <span class="property-purchase-label">Purchase Price</span>
-                            <span class="property-purchase-val" id="prop1PurchaseVal">CHF 1,710,000</span>
+                        <div class="property-right">
+                            <div class="property-scores" id="prop1Scores"></div>
                         </div>
-                        <div class="property-scores" id="prop1Scores"></div>
                         <div class="property-signal"><span>📊</span> Strong market performance detected — allocation impact review recommended</div>
                     </div>
                     <div class="property-card" id="property2">
                         <div class="property-type">Investment Property</div>
-                        <div class="property-address" id="prop2Address">Seestrasse 15</div>
-                        <div class="property-city" id="prop2City">8002 Zurich, Switzerland</div>
-                        <div class="property-stats">
-                            <div><div class="property-value-label">Current Estimate</div><div class="property-value-amount" id="prop2Value">CHF 920,000</div></div>
-                            <div class="property-change positive" id="prop2Change"><span class="property-change-pct">▲ +12.1%</span><span class="perf-period" id="prop2Period">since purchase</span></div>
+                        <div class="property-left">
+                            <div class="property-address" id="prop2Address">Seestrasse 15</div>
+                            <div class="property-city" id="prop2City">8002 Zurich, Switzerland</div>
+                            <div class="property-stats">
+                                <div><div class="property-value-label">Current Estimate</div><div class="property-value-amount" id="prop2Value">CHF 920,000</div></div>
+                                <div class="property-change positive" id="prop2Change"><span class="property-change-pct">▲ +12.1%</span><span class="perf-period" id="prop2Period">since purchase</span></div>
+                            </div>
+                            <div class="property-purchase" id="prop2Purchase">
+                                <span class="property-purchase-label">Purchase Price</span>
+                                <span class="property-purchase-val" id="prop2PurchaseVal">CHF 820,000</span>
+                            </div>
                         </div>
-                        <div class="property-purchase" id="prop2Purchase">
-                            <span class="property-purchase-label">Purchase Price</span>
-                            <span class="property-purchase-val" id="prop2PurchaseVal">CHF 820,000</span>
+                        <div class="property-right">
+                            <div class="property-scores" id="prop2Scores"></div>
                         </div>
-                        <div class="property-scores" id="prop2Scores"></div>
                         <div class="property-signal"><span>📊</span> Strong market performance detected — allocation impact review recommended</div>
                     </div>
                 </div>
@@ -622,7 +637,7 @@
 
             <div class="irr-section" id="irrSection" style="display:none">
                 <div class="section-header">
-                    <span class="section-title">Investment Property — Return Analysis</span>
+                    <span class="section-title">↳ Investment Property — Return Analysis</span>
                     <span class="card-badge badge-green" id="irrBadge">IRR Estimate</span>
                 </div>
                 <div class="irr-card">
